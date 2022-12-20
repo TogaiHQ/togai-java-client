@@ -1,14 +1,14 @@
 
 
-# GetEventResponse
+# PricePlanDetails
 
-Get single event response
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**events** | [**List&lt;EventWithStatusAndEventPipelineInfo&gt;**](EventWithStatusAndEventPipelineInfo.md) |  |  |
+|**pricingCycleConfig** | [**PricingCycleConfig**](PricingCycleConfig.md) |  |  |
+|**rateCards** | [**List&lt;RateCard&gt;**](RateCard.md) |  |  |
 
 
 ## Implemented Interfaces

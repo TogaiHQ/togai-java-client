@@ -20,7 +20,6 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.togai.client.models.PricingCycle;
 import com.togai.client.models.PricingSchedule;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -118,10 +117,6 @@ public class PricePlan implements Serializable {
   @SerializedName(SERIALIZED_NAME_STATUS)
   private StatusEnum status;
 
-  public static final String SERIALIZED_NAME_PRICING_CYCLE = "pricingCycle";
-  @SerializedName(SERIALIZED_NAME_PRICING_CYCLE)
-  private PricingCycle pricingCycle;
-
   public static final String SERIALIZED_NAME_PRICING_SCHEDULE = "pricingSchedule";
   @SerializedName(SERIALIZED_NAME_PRICING_SCHEDULE)
   private List<PricingSchedule> pricingSchedule = new ArrayList<>();
@@ -198,29 +193,6 @@ public class PricePlan implements Serializable {
   }
 
 
-  public PricePlan pricingCycle(PricingCycle pricingCycle) {
-    
-    this.pricingCycle = pricingCycle;
-    return this;
-  }
-
-   /**
-   * Get pricingCycle
-   * @return pricingCycle
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
-
-  public PricingCycle getPricingCycle() {
-    return pricingCycle;
-  }
-
-
-  public void setPricingCycle(PricingCycle pricingCycle) {
-    this.pricingCycle = pricingCycle;
-  }
-
-
   public PricePlan pricingSchedule(List<PricingSchedule> pricingSchedule) {
     
     this.pricingSchedule = pricingSchedule;
@@ -262,13 +234,12 @@ public class PricePlan implements Serializable {
     return Objects.equals(this.name, pricePlan.name) &&
         Objects.equals(this.description, pricePlan.description) &&
         Objects.equals(this.status, pricePlan.status) &&
-        Objects.equals(this.pricingCycle, pricePlan.pricingCycle) &&
         Objects.equals(this.pricingSchedule, pricePlan.pricingSchedule);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, description, status, pricingCycle, pricingSchedule);
+    return Objects.hash(name, description, status, pricingSchedule);
   }
 
   @Override
@@ -278,7 +249,6 @@ public class PricePlan implements Serializable {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    pricingCycle: ").append(toIndentedString(pricingCycle)).append("\n");
     sb.append("    pricingSchedule: ").append(toIndentedString(pricingSchedule)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -305,14 +275,12 @@ public class PricePlan implements Serializable {
     openapiFields.add("name");
     openapiFields.add("description");
     openapiFields.add("status");
-    openapiFields.add("pricingCycle");
     openapiFields.add("pricingSchedule");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("name");
     openapiRequiredFields.add("status");
-    openapiRequiredFields.add("pricingCycle");
     openapiRequiredFields.add("pricingSchedule");
   }
 
@@ -353,10 +321,6 @@ public class PricePlan implements Serializable {
       }
       if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
-      }
-      // validate the optional field `pricingCycle`
-      if (jsonObj.get("pricingCycle") != null && !jsonObj.get("pricingCycle").isJsonNull()) {
-        PricingCycle.validateJsonObject(jsonObj.getAsJsonObject("pricingCycle"));
       }
       JsonArray jsonArraypricingSchedule = jsonObj.getAsJsonArray("pricingSchedule");
       if (jsonArraypricingSchedule != null) {

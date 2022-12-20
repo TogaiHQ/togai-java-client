@@ -1,14 +1,15 @@
 
 
-# GetEventResponse
+# RateConfigBundle
 
-Get single event response
+TODO
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**events** | [**List&lt;EventWithStatusAndEventPipelineInfo&gt;**](EventWithStatusAndEventPipelineInfo.md) |  |  |
+|**usageMeterName** | **String** |  |  |
+|**slab** | [**SlabBundle**](SlabBundle.md) |  |  |
 
 
 ## Implemented Interfaces

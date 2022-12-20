@@ -20,8 +20,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.togai.client.models.PricingCycle;
-import com.togai.client.models.RateCard;
+import com.togai.client.models.PricePlanDetailsOverride;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
@@ -59,13 +58,9 @@ public class UpdatePricePlanRequest implements Serializable {
   @SerializedName(SERIALIZED_NAME_DESCRIPTION)
   private String description;
 
-  public static final String SERIALIZED_NAME_PRICING_CYCLE = "pricingCycle";
-  @SerializedName(SERIALIZED_NAME_PRICING_CYCLE)
-  private PricingCycle pricingCycle;
-
-  public static final String SERIALIZED_NAME_RATE_CARD = "rateCard";
-  @SerializedName(SERIALIZED_NAME_RATE_CARD)
-  private RateCard rateCard;
+  public static final String SERIALIZED_NAME_PRICE_PLAN_DETAILS = "pricePlanDetails";
+  @SerializedName(SERIALIZED_NAME_PRICE_PLAN_DETAILS)
+  private PricePlanDetailsOverride pricePlanDetails;
 
   public UpdatePricePlanRequest() {
   }
@@ -93,49 +88,26 @@ public class UpdatePricePlanRequest implements Serializable {
   }
 
 
-  public UpdatePricePlanRequest pricingCycle(PricingCycle pricingCycle) {
+  public UpdatePricePlanRequest pricePlanDetails(PricePlanDetailsOverride pricePlanDetails) {
     
-    this.pricingCycle = pricingCycle;
+    this.pricePlanDetails = pricePlanDetails;
     return this;
   }
 
    /**
-   * Get pricingCycle
-   * @return pricingCycle
+   * Get pricePlanDetails
+   * @return pricePlanDetails
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public PricingCycle getPricingCycle() {
-    return pricingCycle;
+  public PricePlanDetailsOverride getPricePlanDetails() {
+    return pricePlanDetails;
   }
 
 
-  public void setPricingCycle(PricingCycle pricingCycle) {
-    this.pricingCycle = pricingCycle;
-  }
-
-
-  public UpdatePricePlanRequest rateCard(RateCard rateCard) {
-    
-    this.rateCard = rateCard;
-    return this;
-  }
-
-   /**
-   * Get rateCard
-   * @return rateCard
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
-
-  public RateCard getRateCard() {
-    return rateCard;
-  }
-
-
-  public void setRateCard(RateCard rateCard) {
-    this.rateCard = rateCard;
+  public void setPricePlanDetails(PricePlanDetailsOverride pricePlanDetails) {
+    this.pricePlanDetails = pricePlanDetails;
   }
 
 
@@ -150,13 +122,12 @@ public class UpdatePricePlanRequest implements Serializable {
     }
     UpdatePricePlanRequest updatePricePlanRequest = (UpdatePricePlanRequest) o;
     return Objects.equals(this.description, updatePricePlanRequest.description) &&
-        Objects.equals(this.pricingCycle, updatePricePlanRequest.pricingCycle) &&
-        Objects.equals(this.rateCard, updatePricePlanRequest.rateCard);
+        Objects.equals(this.pricePlanDetails, updatePricePlanRequest.pricePlanDetails);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, pricingCycle, rateCard);
+    return Objects.hash(description, pricePlanDetails);
   }
 
   @Override
@@ -164,8 +135,7 @@ public class UpdatePricePlanRequest implements Serializable {
     StringBuilder sb = new StringBuilder();
     sb.append("class UpdatePricePlanRequest {\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    pricingCycle: ").append(toIndentedString(pricingCycle)).append("\n");
-    sb.append("    rateCard: ").append(toIndentedString(rateCard)).append("\n");
+    sb.append("    pricePlanDetails: ").append(toIndentedString(pricePlanDetails)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -189,8 +159,7 @@ public class UpdatePricePlanRequest implements Serializable {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("description");
-    openapiFields.add("pricingCycle");
-    openapiFields.add("rateCard");
+    openapiFields.add("pricePlanDetails");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -221,13 +190,9 @@ public class UpdatePricePlanRequest implements Serializable {
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
       }
-      // validate the optional field `pricingCycle`
-      if (jsonObj.get("pricingCycle") != null && !jsonObj.get("pricingCycle").isJsonNull()) {
-        PricingCycle.validateJsonObject(jsonObj.getAsJsonObject("pricingCycle"));
-      }
-      // validate the optional field `rateCard`
-      if (jsonObj.get("rateCard") != null && !jsonObj.get("rateCard").isJsonNull()) {
-        RateCard.validateJsonObject(jsonObj.getAsJsonObject("rateCard"));
+      // validate the optional field `pricePlanDetails`
+      if (jsonObj.get("pricePlanDetails") != null && !jsonObj.get("pricePlanDetails").isJsonNull()) {
+        PricePlanDetailsOverride.validateJsonObject(jsonObj.getAsJsonObject("pricePlanDetails"));
       }
   }
 

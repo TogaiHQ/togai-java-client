@@ -20,10 +20,13 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.togai.client.models.PriceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.Serializable;
 
 import com.google.gson.Gson;
@@ -47,11 +50,11 @@ import java.util.Set;
 import com.togai.client.JSON;
 
 /**
- * Represents a pricing strategy (rates + slabs) for usage price plan
+ * Represents a pricing priceType (rates + slabs) for usage price plan
  */
-@ApiModel(description = "Represents a pricing strategy (rates + slabs) for usage price plan")
+@ApiModel(description = "Represents a pricing priceType (rates + slabs) for usage price plan")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class UsageStrategy implements Serializable {
+public class SlabUsage implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public static final String SERIALIZED_NAME_RATE = "rate";
@@ -60,16 +63,24 @@ public class UsageStrategy implements Serializable {
 
   public static final String SERIALIZED_NAME_START_AFTER = "startAfter";
   @SerializedName(SERIALIZED_NAME_START_AFTER)
-  private Double startAfter;
+  private BigDecimal startAfter;
+
+  public static final String SERIALIZED_NAME_PRICE_TYPE = "priceType";
+  @SerializedName(SERIALIZED_NAME_PRICE_TYPE)
+  private PriceType priceType;
+
+  public static final String SERIALIZED_NAME_CONFIG = "config";
+  @SerializedName(SERIALIZED_NAME_CONFIG)
+  private Map<String, String> config = null;
 
   public static final String SERIALIZED_NAME_ORDER = "order";
   @SerializedName(SERIALIZED_NAME_ORDER)
   private Integer order;
 
-  public UsageStrategy() {
+  public SlabUsage() {
   }
 
-  public UsageStrategy rate(BigDecimal rate) {
+  public SlabUsage rate(BigDecimal rate) {
     
     this.rate = rate;
     return this;
@@ -92,7 +103,7 @@ public class UsageStrategy implements Serializable {
   }
 
 
-  public UsageStrategy startAfter(Double startAfter) {
+  public SlabUsage startAfter(BigDecimal startAfter) {
     
     this.startAfter = startAfter;
     return this;
@@ -105,17 +116,71 @@ public class UsageStrategy implements Serializable {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public Double getStartAfter() {
+  public BigDecimal getStartAfter() {
     return startAfter;
   }
 
 
-  public void setStartAfter(Double startAfter) {
+  public void setStartAfter(BigDecimal startAfter) {
     this.startAfter = startAfter;
   }
 
 
-  public UsageStrategy order(Integer order) {
+  public SlabUsage priceType(PriceType priceType) {
+    
+    this.priceType = priceType;
+    return this;
+  }
+
+   /**
+   * Get priceType
+   * @return priceType
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public PriceType getPriceType() {
+    return priceType;
+  }
+
+
+  public void setPriceType(PriceType priceType) {
+    this.priceType = priceType;
+  }
+
+
+  public SlabUsage config(Map<String, String> config) {
+    
+    this.config = config;
+    return this;
+  }
+
+  public SlabUsage putConfigItem(String key, String configItem) {
+    if (this.config == null) {
+      this.config = new HashMap<>();
+    }
+    this.config.put(key, configItem);
+    return this;
+  }
+
+   /**
+   * Get config
+   * @return config
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Map<String, String> getConfig() {
+    return config;
+  }
+
+
+  public void setConfig(Map<String, String> config) {
+    this.config = config;
+  }
+
+
+  public SlabUsage order(Integer order) {
     
     this.order = order;
     return this;
@@ -149,23 +214,27 @@ public class UsageStrategy implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UsageStrategy usageStrategy = (UsageStrategy) o;
-    return Objects.equals(this.rate, usageStrategy.rate) &&
-        Objects.equals(this.startAfter, usageStrategy.startAfter) &&
-        Objects.equals(this.order, usageStrategy.order);
+    SlabUsage slabUsage = (SlabUsage) o;
+    return Objects.equals(this.rate, slabUsage.rate) &&
+        Objects.equals(this.startAfter, slabUsage.startAfter) &&
+        Objects.equals(this.priceType, slabUsage.priceType) &&
+        Objects.equals(this.config, slabUsage.config) &&
+        Objects.equals(this.order, slabUsage.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rate, startAfter, order);
+    return Objects.hash(rate, startAfter, priceType, config, order);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UsageStrategy {\n");
+    sb.append("class SlabUsage {\n");
     sb.append("    rate: ").append(toIndentedString(rate)).append("\n");
     sb.append("    startAfter: ").append(toIndentedString(startAfter)).append("\n");
+    sb.append("    priceType: ").append(toIndentedString(priceType)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -191,12 +260,15 @@ public class UsageStrategy implements Serializable {
     openapiFields = new HashSet<String>();
     openapiFields.add("rate");
     openapiFields.add("startAfter");
+    openapiFields.add("priceType");
+    openapiFields.add("config");
     openapiFields.add("order");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("rate");
     openapiRequiredFields.add("startAfter");
+    openapiRequiredFields.add("priceType");
     openapiRequiredFields.add("order");
   }
 
@@ -204,27 +276,27 @@ public class UsageStrategy implements Serializable {
   * Validates the JSON Object and throws an exception if issues found
   *
   * @param jsonObj JSON Object
-  * @throws IOException if the JSON Object is invalid with respect to UsageStrategy
+  * @throws IOException if the JSON Object is invalid with respect to SlabUsage
   */
   public static void validateJsonObject(JsonObject jsonObj) throws IOException {
       if (jsonObj == null) {
-        if (UsageStrategy.openapiRequiredFields.isEmpty()) {
+        if (SlabUsage.openapiRequiredFields.isEmpty()) {
           return;
         } else { // has required fields
-          throw new IllegalArgumentException(String.format("The required field(s) %s in UsageStrategy is not found in the empty JSON string", UsageStrategy.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in SlabUsage is not found in the empty JSON string", SlabUsage.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!UsageStrategy.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UsageStrategy` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        if (!SlabUsage.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SlabUsage` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : UsageStrategy.openapiRequiredFields) {
+      for (String requiredField : SlabUsage.openapiRequiredFields) {
         if (jsonObj.get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
@@ -235,22 +307,22 @@ public class UsageStrategy implements Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!UsageStrategy.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'UsageStrategy' and its subtypes
+       if (!SlabUsage.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'SlabUsage' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<UsageStrategy> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(UsageStrategy.class));
+       final TypeAdapter<SlabUsage> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(SlabUsage.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<UsageStrategy>() {
+       return (TypeAdapter<T>) new TypeAdapter<SlabUsage>() {
            @Override
-           public void write(JsonWriter out, UsageStrategy value) throws IOException {
+           public void write(JsonWriter out, SlabUsage value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public UsageStrategy read(JsonReader in) throws IOException {
+           public SlabUsage read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
              return thisAdapter.fromJsonTree(jsonObj);
@@ -261,18 +333,18 @@ public class UsageStrategy implements Serializable {
   }
 
  /**
-  * Create an instance of UsageStrategy given an JSON string
+  * Create an instance of SlabUsage given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of UsageStrategy
-  * @throws IOException if the JSON string is invalid with respect to UsageStrategy
+  * @return An instance of SlabUsage
+  * @throws IOException if the JSON string is invalid with respect to SlabUsage
   */
-  public static UsageStrategy fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, UsageStrategy.class);
+  public static SlabUsage fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, SlabUsage.class);
   }
 
  /**
-  * Convert an instance of UsageStrategy to an JSON string
+  * Convert an instance of SlabUsage to an JSON string
   *
   * @return JSON string
   */

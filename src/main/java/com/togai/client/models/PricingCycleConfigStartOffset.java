@@ -50,7 +50,7 @@ import com.togai.client.JSON;
  */
 @ApiModel(description = "Represents the start of pricing cycle in terms of  - dayOffset - number of days from beginning of month and  - monthOffset - number of months from beginning of interval (quarter, half-year or year) Note: If a day with offset doesn't exist for a month, closest previous day is considered Examples: MONTHLY -   - {dayOffset: 1, monthOffset: NIL} - First day of every month   - {dayOffset: 12, monthOffset: NIL} - 12th of every month   - {dayOffset: 28, monthOffset: NIL} - 28th of every month. i.e, 28th of Jan, 28th of Feb, ...   - {dayOffset: 30, monthOffset: NIL} - 30th of every month. i.e, 28th of Jan, 28th of Feb, ...   - {dayOffset: LAST, monthOffset: NIL} - Last day of every month. i.e, 31st of Jan, 28th of Feb, ... QUARTERLY   - {dayOffset: 15, monthOffset: FIRST} - 15th Jan, 15th Apr, 15th Jul and 15th Oct   - {dayOffset: 15, monthOffset: 2} - 15th Feb, 15th May, 15th Aug and 15th Nov   - {dayOffset: 15, monthOffset: LAST} - 15th Mar, 15th Jun, 15th Sep and 15th Dec   - {dayOffset: LAST, monthOffset: FIRST} - 31st Jan, 30th Apr, 30th Jul and 31th Oct HALF_YEARLY   - {dayOffset: 15, monthOffset: FIRST} - 15th Jan and 15th Jul   - {dayOffset: 15, monthOffset: 4} - 15th Apr and 15th Oct   - {dayOffset: 15, monthOffset: LAST} - 15th Jun and 15th Dec ANNUALLY   - {dayOffset: 15, monthOffset: FIRST} - 15th Jan   - {dayOffset: 15, monthOffset: 1} - 15th Jan   - {dayOffset: LAST, monthOffset: 2} - 29th Feb on Leap year, 28th otherwise    - {dayOffset: 15, monthOffset: 8} - 15th Aug   - {dayOffset: 15, monthOffset: LAST} - 15th Dec ")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class PricingCycleStartOffset implements Serializable {
+public class PricingCycleConfigStartOffset implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public static final String SERIALIZED_NAME_DAY_OFFSET = "dayOffset";
@@ -61,10 +61,10 @@ public class PricingCycleStartOffset implements Serializable {
   @SerializedName(SERIALIZED_NAME_MONTH_OFFSET)
   private String monthOffset;
 
-  public PricingCycleStartOffset() {
+  public PricingCycleConfigStartOffset() {
   }
 
-  public PricingCycleStartOffset dayOffset(String dayOffset) {
+  public PricingCycleConfigStartOffset dayOffset(String dayOffset) {
     
     this.dayOffset = dayOffset;
     return this;
@@ -87,7 +87,7 @@ public class PricingCycleStartOffset implements Serializable {
   }
 
 
-  public PricingCycleStartOffset monthOffset(String monthOffset) {
+  public PricingCycleConfigStartOffset monthOffset(String monthOffset) {
     
     this.monthOffset = monthOffset;
     return this;
@@ -119,9 +119,9 @@ public class PricingCycleStartOffset implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PricingCycleStartOffset pricingCycleStartOffset = (PricingCycleStartOffset) o;
-    return Objects.equals(this.dayOffset, pricingCycleStartOffset.dayOffset) &&
-        Objects.equals(this.monthOffset, pricingCycleStartOffset.monthOffset);
+    PricingCycleConfigStartOffset pricingCycleConfigStartOffset = (PricingCycleConfigStartOffset) o;
+    return Objects.equals(this.dayOffset, pricingCycleConfigStartOffset.dayOffset) &&
+        Objects.equals(this.monthOffset, pricingCycleConfigStartOffset.monthOffset);
   }
 
   @Override
@@ -132,7 +132,7 @@ public class PricingCycleStartOffset implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PricingCycleStartOffset {\n");
+    sb.append("class PricingCycleConfigStartOffset {\n");
     sb.append("    dayOffset: ").append(toIndentedString(dayOffset)).append("\n");
     sb.append("    monthOffset: ").append(toIndentedString(monthOffset)).append("\n");
     sb.append("}");
@@ -170,27 +170,27 @@ public class PricingCycleStartOffset implements Serializable {
   * Validates the JSON Object and throws an exception if issues found
   *
   * @param jsonObj JSON Object
-  * @throws IOException if the JSON Object is invalid with respect to PricingCycleStartOffset
+  * @throws IOException if the JSON Object is invalid with respect to PricingCycleConfigStartOffset
   */
   public static void validateJsonObject(JsonObject jsonObj) throws IOException {
       if (jsonObj == null) {
-        if (PricingCycleStartOffset.openapiRequiredFields.isEmpty()) {
+        if (PricingCycleConfigStartOffset.openapiRequiredFields.isEmpty()) {
           return;
         } else { // has required fields
-          throw new IllegalArgumentException(String.format("The required field(s) %s in PricingCycleStartOffset is not found in the empty JSON string", PricingCycleStartOffset.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in PricingCycleConfigStartOffset is not found in the empty JSON string", PricingCycleConfigStartOffset.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!PricingCycleStartOffset.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `PricingCycleStartOffset` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        if (!PricingCycleConfigStartOffset.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `PricingCycleConfigStartOffset` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : PricingCycleStartOffset.openapiRequiredFields) {
+      for (String requiredField : PricingCycleConfigStartOffset.openapiRequiredFields) {
         if (jsonObj.get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
@@ -207,22 +207,22 @@ public class PricingCycleStartOffset implements Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!PricingCycleStartOffset.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'PricingCycleStartOffset' and its subtypes
+       if (!PricingCycleConfigStartOffset.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'PricingCycleConfigStartOffset' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<PricingCycleStartOffset> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(PricingCycleStartOffset.class));
+       final TypeAdapter<PricingCycleConfigStartOffset> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(PricingCycleConfigStartOffset.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<PricingCycleStartOffset>() {
+       return (TypeAdapter<T>) new TypeAdapter<PricingCycleConfigStartOffset>() {
            @Override
-           public void write(JsonWriter out, PricingCycleStartOffset value) throws IOException {
+           public void write(JsonWriter out, PricingCycleConfigStartOffset value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public PricingCycleStartOffset read(JsonReader in) throws IOException {
+           public PricingCycleConfigStartOffset read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
              return thisAdapter.fromJsonTree(jsonObj);
@@ -233,18 +233,18 @@ public class PricingCycleStartOffset implements Serializable {
   }
 
  /**
-  * Create an instance of PricingCycleStartOffset given an JSON string
+  * Create an instance of PricingCycleConfigStartOffset given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of PricingCycleStartOffset
-  * @throws IOException if the JSON string is invalid with respect to PricingCycleStartOffset
+  * @return An instance of PricingCycleConfigStartOffset
+  * @throws IOException if the JSON string is invalid with respect to PricingCycleConfigStartOffset
   */
-  public static PricingCycleStartOffset fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, PricingCycleStartOffset.class);
+  public static PricingCycleConfigStartOffset fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, PricingCycleConfigStartOffset.class);
   }
 
  /**
-  * Convert an instance of PricingCycleStartOffset to an JSON string
+  * Convert an instance of PricingCycleConfigStartOffset to an JSON string
   *
   * @return JSON string
   */

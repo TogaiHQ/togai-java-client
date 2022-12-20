@@ -39,7 +39,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.togai</groupId>
   <artifactId>togai-java-client</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -55,7 +55,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "com.togai:togai-java-client:1.0.0"
+     implementation "com.togai:togai-java-client:1.0.2"
   }
 ```
 
@@ -69,7 +69,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/togai-java-client-1.0.0.jar`
+* `target/togai-java-client-1.0.2.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -169,8 +169,7 @@ Class | Method | HTTP request | Description
  - [AssociatePricePlanRequest](docs/AssociatePricePlanRequest.md)
  - [AssociatePricePlanResponse](docs/AssociatePricePlanResponse.md)
  - [BaseSuccessResponse](docs/BaseSuccessResponse.md)
- - [BundleStrategy](docs/BundleStrategy.md)
- - [BundleStrategyUsageMetersValue](docs/BundleStrategyUsageMetersValue.md)
+ - [Bundle](docs/Bundle.md)
  - [Computation](docs/Computation.md)
  - [CreateAccountRequest](docs/CreateAccountRequest.md)
  - [CreateCustomerRequest](docs/CreateCustomerRequest.md)
@@ -218,17 +217,25 @@ Class | Method | HTTP request | Description
  - [PaginationOptions](docs/PaginationOptions.md)
  - [PlanOverride](docs/PlanOverride.md)
  - [PricePlan](docs/PricePlan.md)
+ - [PricePlanDetails](docs/PricePlanDetails.md)
+ - [PricePlanDetailsOverride](docs/PricePlanDetailsOverride.md)
  - [PricePlanListData](docs/PricePlanListData.md)
  - [PricePlanPaginatedResponse](docs/PricePlanPaginatedResponse.md)
- - [PricingCycle](docs/PricingCycle.md)
- - [PricingCycleStartOffset](docs/PricingCycleStartOffset.md)
+ - [PriceType](docs/PriceType.md)
+ - [PricingCycleConfig](docs/PricingCycleConfig.md)
+ - [PricingCycleConfigStartOffset](docs/PricingCycleConfigStartOffset.md)
+ - [PricingModel](docs/PricingModel.md)
  - [PricingSchedule](docs/PricingSchedule.md)
  - [RateCard](docs/RateCard.md)
- - [RateCardBundle](docs/RateCardBundle.md)
- - [RateCardUsageValue](docs/RateCardUsageValue.md)
+ - [RateCardBundleAggregation](docs/RateCardBundleAggregation.md)
+ - [RateCardType](docs/RateCardType.md)
+ - [RateConfigBundle](docs/RateConfigBundle.md)
+ - [RateConfigUsage](docs/RateConfigUsage.md)
  - [RemoveAccountAliasesRequest](docs/RemoveAccountAliasesRequest.md)
  - [SignupRequest](docs/SignupRequest.md)
  - [SignupResponse](docs/SignupResponse.md)
+ - [SlabBundle](docs/SlabBundle.md)
+ - [SlabUsage](docs/SlabUsage.md)
  - [StatusResponse](docs/StatusResponse.md)
  - [StatusResponseHeaders](docs/StatusResponseHeaders.md)
  - [UpdateAccountRequest](docs/UpdateAccountRequest.md)
@@ -238,7 +245,6 @@ Class | Method | HTTP request | Description
  - [UpdateUsageMeterRequest](docs/UpdateUsageMeterRequest.md)
  - [UsageMeter](docs/UsageMeter.md)
  - [UsageMeterPaginatedResponse](docs/UsageMeterPaginatedResponse.md)
- - [UsageStrategy](docs/UsageStrategy.md)
  - [UserDetails](docs/UserDetails.md)
 
 

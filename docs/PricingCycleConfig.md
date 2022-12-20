@@ -1,6 +1,6 @@
 
 
-# PricingCycle
+# PricingCycleConfig
 
 Represents configurations related to pricing cycle
 
@@ -10,7 +10,7 @@ Represents configurations related to pricing cycle
 |------------ | ------------- | ------------- | -------------|
 |**interval** | [**IntervalEnum**](#IntervalEnum) |  |  |
 |**startType** | [**StartTypeEnum**](#StartTypeEnum) |  |  |
-|**startOffset** | [**PricingCycleStartOffset**](PricingCycleStartOffset.md) |  |  |
+|**startOffset** | [**PricingCycleConfigStartOffset**](PricingCycleConfigStartOffset.md) |  |  |
 |**gracePeriod** | **Integer** |  |  |
 
 

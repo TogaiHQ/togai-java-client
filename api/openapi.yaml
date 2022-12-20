@@ -3034,7 +3034,7 @@ paths:
           content:
             application/json:
               examples:
-                Customer:
+                PricePlanResponse:
                   $ref: '#/components/examples/PricePlan'
               schema:
                 $ref: '#/components/schemas/PricePlan'
@@ -3131,7 +3131,7 @@ paths:
           content:
             application/json:
               examples:
-                Customer:
+                PricePlanResponse:
                   $ref: '#/components/examples/PricePlan'
               schema:
                 $ref: '#/components/schemas/PricePlan'
@@ -3228,7 +3228,7 @@ paths:
           content:
             application/json:
               examples:
-                Customer:
+                PricePlanResponse:
                   $ref: '#/components/examples/PricePlan'
               schema:
                 $ref: '#/components/schemas/PricePlan'
@@ -3325,7 +3325,7 @@ paths:
           content:
             application/json:
               examples:
-                Customer:
+                PricePlanResponse:
                   $ref: '#/components/examples/PricePlan'
               schema:
                 $ref: '#/components/schemas/PricePlan'
@@ -3857,6 +3857,28 @@ components:
         aliases:
         - account2@acme.com
         - +1234567890
+    CreateEventSchemaRequest:
+      summary: Create event schema request payload
+      value:
+        name: ride_completed
+        description: Cab ride completed
+        attributes:
+        - name: distance
+        - name: time
+        dimensions:
+        - name: city
+        - name: ride_type
+    UpdateEventSchemaRequest:
+      summary: Update event schema request payload
+      value:
+        description: Cab ride completed
+        status: DRAFT
+        attributes:
+        - name: distance
+        - name: time
+        dimensions:
+        - name: city
+        - name: ride_type
     CreateUsageMeterRequest:
       value:
         name: Rides
@@ -3876,71 +3898,94 @@ components:
       value:
         name: Rides - Pro plan
         description: ""
-        pricingCycle:
-          interval: MONTHLY
-          startType: STATIC
-          offsetDays: 4
-          gracePeriod: 3
-        rateCard:
-          type: USAGE
-          usageConfig:
-            rides - local:
-              rateStrategy: PER_UNIT
-              slabStrategy: TIER
+        pricePlanDetails:
+          pricingCycleConfig:
+            interval: MONTHLY
+            startType: STATIC
+            startOffset:
+              dayOffset: "4"
+              monthOffset: NIL
+            gracePeriod: 3
+          rateCards:
+          - type: USAGE
+            usageMeters:
+            - rides - local
+            displayName: Local Rides
+            pricingModel: TIERED
+            rateConfig:
+              usageMeterName: rides - local
               slabs:
               - rate: 100
+                priceType: PER_UNIT
                 startAfter: 0
                 order: 1
               - rate: 40
+                priceType: PER_UNIT
                 startAfter: 10
                 order: 2
               - rate: 10
+                priceType: PER_UNIT
                 startAfter: 50
                 order: 3
     CreatePricePlanRequestBundle:
       value:
         name: Rides - Pro plan
         description: ""
-        pricingCycle:
-          interval: MONTHLY
-          startType: STATIC
-          offsetDays: 4
-          gracePeriod: 3
-        rateCard:
-          type: BUNDLE
-          bundleConfig:
-            rateStrategy: FLAT
-            slabStrategy: TIER
+        pricePlanDetails:
+          pricingCycleConfig:
+            interval: QUARTERLY
+            startType: STATIC
+            startOffset:
+              dayOffset: 1
+              monthOffset: LAST
+            gracePeriod: 3
+          rateCards:
+          - type: BUNDLE
+            usageMeters:
+            - rides - local
+            - rides - intercity
+            pricingModel: VOLUME
+            aggregation: MAX
             bundles:
-            - rate: 100
-              order: 1
+            - displayName: rides - base bundle
               usageMeters:
-                rides - local:
+              - usageMeterName: rides - local
+                slab:
+                  rate: 100
+                  priceType: PER_UNIT
                   startAfter: 0
-                rides - intercity:
+                  order: 1
+              - usageMeterName: rides - intercity
+                slab:
+                  rate: 100
+                  priceType: PER_UNIT
                   startAfter: 0
-            - rate: 40
-              order: 2
+                  order: 1
+            - displayName: rides - pro bundle
               usageMeters:
-                rides - local:
-                  startAfter: 10
-                rides - intercity:
-                  startAfter: 500
-            - rate: 20
-              order: 3
-              usageMeters:
-                rides - local:
-                  startAfter: 50
-                rides - intercity:
-                  startAfter: 2500
+              - usageMeterName: rides - local
+                slab:
+                  rate: 40
+                  priceType: PER_UNIT
+                  startAfter: 30
+                  order: 2
+              - usageMeterName: rides - intercity
+                slab:
+                  rate: 40
+                  priceType: PER_UNIT
+                  startAfter: 20
+                  order: 2
     UpdatePricePlanRequest:
       value:
         description: updated description
-        pricingCycle:
-          interval: MONTHLY
-          startType: STATIC
-          offsetDays: 6
-          gracePeriod: 3
+        pricePlanDetails:
+          pricingCycleConfig:
+            interval: MONTHLY
+            startType: STATIC
+            startOffset:
+              dayOffset: "6"
+              monthOffset: NIL
+            gracePeriod: 3
     AssociatePricePlanRequest:
       value:
         pricePlanName: Rides - Pro plan
@@ -3965,8 +4010,9 @@ components:
         account:
           id: G234DZZKBKACATFFGVGEMERFH
           name: ACME Enterprise - Account
+          status: ACTIVE
           aliases:
-            alias: G234DZZKBKACATFFGVGEMERFH
+          - alias: G234DZZKBKACATFFGVGEMERFH
             status: ACTIVE
     CustomerPaginatedResponse:
       value:
@@ -3976,10 +4022,12 @@ components:
           primaryEmail: admin@example.com
           billingAddress: "201 Boulevard, WA 53123"
           status: ACTIVE
+          createdAt: 2020-01-01T10:10:22.000Z
+          updatedAt: 2020-01-01T10:10:22.000Z
         nextToken: eyJsYXN0SXRlbUlkIjogInN0cmluZyIsICJwYWdlU2l6ZSI6IDEyMywgInNvcnRPcmRlciI6ICJhc2MifQ==
         context:
           pageSize: 10
-          sortOrder: asc
+          sortOrder: ASC
     AccountPaginatedResponse:
       value:
         data:
@@ -3994,7 +4042,7 @@ components:
         nextToken: eyJsYXN0SXRlbUlkIjogInN0cmluZyIsICJwYWdlU2l6ZSI6IDEyMywgInNvcnRPcmRlciI6ICJhc2MifQ==
         context:
           pageSize: 10
-          sortOrder: asc
+          sortOrder: ASC
     EventSchemaListPaginatedResponse:
       value:
         data:
@@ -4008,12 +4056,11 @@ components:
           dimensions:
           - name: city
           - name: ride_type
-          associatedUsageMeters:
-          - Rides
+          usageMetersCount: 10
         nextToken: eyJsYXN0SXRlbUlkIjogInN0cmluZyIsICJwYWdlU2l6ZSI6IDEyMywgInNvcnRPcmRlciI6ICJhc2MifQ==
         context:
           pageSize: 10
-          sortOrder: asc
+          sortOrder: ASC
     UsageMeterPaginatedResponse:
       value:
         data:
@@ -4021,7 +4068,6 @@ components:
           description: Cab rides
           type: COUNTER
           aggregation: COUNT
-          version: 1
           status: DRAFT
           computations:
           - matcher: "{\n  \"and\": [\n    {\"in\": [{\"var\": \"dimension.city\"\
@@ -4032,35 +4078,48 @@ components:
         nextToken: eyJsYXN0SXRlbUlkIjogInN0cmluZyIsICJwYWdlU2l6ZSI6IDEyMywgInNvcnRPcmRlciI6ICJhc2MifQ==
         context:
           pageSize: 10
-          sortOrder: asc
+          sortOrder: ASC
     AssociatePricePlanResponse:
       value:
         accountId: G234DZZKBKACATFFGVGEMERFI
         accountName: ACME Enterprise - Account2
         pricingSchedules:
         - pricePlanName: Rides
-          override: null
-          startDate: 2022-01-01T00:00:00
-          endDate: 2022-02-01T00:00:00
+          startDate: 2022-01-01T00:00:00Z
+          endDate: 2022-02-01T00:00:00Z
         - pricePlanName: Rides
-          override:
-            type: USAGE
-            usageConfig:
-              rides - local:
-                rateStrategy: PER_UNIT
-                slabStrategy: TIER
+          pricePlanDetailsOverride:
+            pricingCycleConfig:
+              interval: MONTHLY
+              startType: STATIC
+              startOffset:
+                dayOffset: "4"
+                monthOffset: NIL
+              gracePeriod: 3
+            rateCards:
+            - type: USAGE
+              usageMeters:
+              - rides - local
+              pricingModel: TIERED
+              rateConfig:
+                usageMeterName: rides - local
                 slabs:
                 - rate: 100
+                  priceType: FLAT
                   startAfter: 0
                   order: 1
                 - rate: 40
+                  priceType: PACKAGE
+                  config:
+                    packageSize: 5
                   startAfter: 10
                   order: 2
                 - rate: 10
+                  priceType: FLAT
                   startAfter: 50
                   order: 3
-          startDate: 2022-02-01T00:00:00
-          endDate: 9999-01-01T00:00:00
+          startDate: 2022-02-01T00:00:00Z
+          endDate: 9999-01-01T00:00:00Z
     Account:
       summary: A sample Account
       value:
@@ -4117,175 +4176,249 @@ components:
         name: Rides - Pro plan
         description: ""
         status: DRAFT
-        pricingCycle:
-          interval: MONTHLY
-          startType: STATIC
-          offsetDays: 4
-          gracePeriod: 3
         pricingSchedule:
-        - startDate: 2022-01-04T00:00:00
-          endDate: 2022-02-04T00:00:00
-          ratePayload:
-            type: USAGE
-            usageConfig:
-              rides - local:
-                rateStrategy: PER_UNIT
-                slabStrategy: TIER
+        - startDate: 2022-01-04T00:00:00Z
+          endDate: 2022-02-04T00:00:00Z
+          pricePlanDetails:
+            pricingCycleConfig:
+              interval: MONTHLY
+              startType: STATIC
+              startOffset:
+                dayOffset: "1"
+                monthOffset: NIL
+              gracePeriod: 3
+            rateCards:
+            - type: USAGE
+              usageMeters:
+              - rides - local
+              displayName: Local Rides
+              pricingModel: TIERED
+              rateConfig:
+                usageMeterName: rides - local
                 slabs:
                 - rate: 100
+                  priceType: PER_UNIT
                   startAfter: 0
                   order: 1
                 - rate: 40
+                  priceType: PER_UNIT
                   startAfter: 10
                   order: 2
                 - rate: 10
+                  priceType: PER_UNIT
                   startAfter: 50
                   order: 3
-        - startDate: 2022-02-04T00:00:00
-          endDate: 2022-03-04T00:00:00
-          ratePayload:
-            type: BUNDLE
-            bundleConfig:
-              rateStrategy: FLAT
-              slabStrategy: TIER
+        - startDate: 2022-02-04T00:00:00Z
+          endDate: 2022-03-04T00:00:00Z
+          pricePlanDetails:
+            pricingCycleConfig:
+              interval: MONTHLY
+              startType: STATIC
+              startOffset:
+                dayOffset: "4"
+                monthOffset: NIL
+              gracePeriod: 3
+            rateCards:
+            - type: BUNDLE
+              usageMeters:
+              - rides - local
+              - rides - intercity
+              pricingModel: VOLUME
+              aggregation: MAX
               bundles:
-              - rate: 100
+              - displayName: rides - base bundle
                 order: 1
-                usageMeters:
-                  rides - local:
+                rateConfigs:
+                - usageMeterName: rides - local
+                  slab:
+                    rate: 100
+                    priceType: PER_UNIT
                     startAfter: 0
-                  rides - intercity:
+                - usageMeterName: rides - intercity
+                  slab:
+                    rate: 100
+                    priceType: PER_UNIT
+                    config:
+                      maximumRate: 1000
                     startAfter: 0
-              - rate: 40
+              - displayName: rides - pro bundle
                 order: 2
-                usageMeters:
-                  rides - local:
-                    startAfter: 10
-                  rides - intercity:
-                    startAfter: 500
-              - rate: 20
-                order: 3
-                usageMeters:
-                  rides - local:
-                    startAfter: 50
-                  rides - intercity:
-                    startAfter: 2500
+                rateConfigs:
+                - usageMeterName: rides - local
+                  slab:
+                    rate: 40
+                    priceType: PER_UNIT
+                    startAfter: 30
+                - usageMeterName: rides - intercity
+                  slab:
+                    rate: 40
+                    priceType: PER_UNIT
+                    startAfter: 20
     PricePlanPaginatedResponse:
       value:
         data:
         - name: Rides - Pro plan
           description: ""
           status: DRAFT
-          pricingCycle:
-            interval: MONTHLY
-            startType: STATIC
-            startOffset:
-              dayOffset: 4
-              monthOffset: NIL
-            gracePeriod: 3
+          pricePlanDetails:
+            pricingCycleConfig:
+              interval: MONTHLY
+              startType: STATIC
+              startOffset:
+                dayOffset: "4"
+                monthOffset: NIL
+              gracePeriod: 3
+            rateCards:
+            - type: USAGE
+              usageMeters:
+              - rides - local
+              displayName: Local Rides
+              pricingModel: TIERED
+              rateConfig:
+                usageMeterName: rides - local
+                slabs:
+                - rate: 100
+                  priceType: PER_UNIT
+                  startAfter: 0
+                  order: 1
+                - rate: 40
+                  priceType: PER_UNIT
+                  startAfter: 10
+                  order: 2
+                - rate: 10
+                  priceType: PER_UNIT
+                  startAfter: 50
+                  order: 3
           usageMeters:
           - ride_completed
           - ride_started
-          billingType: USAGE
-          updatedAt: 2020-01-01T00:00:00
-          createdAt: 2020-01-01T00:00:00
+          updatedAt: 2020-01-01T00:00:00Z
+          createdAt: 2020-01-01T00:00:00Z
         nextToken: eyJsYXN0SXRlbUlkIjogInN0cmluZyIsICJwYWdlU2l6ZSI6IDEyMywgInNvcnRPcmRlciI6ICJhc2MifQ==
     PricingScheduleUsage:
       value:
-        ratePayload:
-          type: USAGE
-          usageConfig:
-            rides - local:
-              rateStrategy: PER_UNIT
-              slabStrategy: TIER
-              slabs:
-              - rate: 100
-                startAfter: 0
-                order: 1
-              - rate: 40
-                startAfter: 10
-                order: 2
-              - rate: 10
-                startAfter: 50
-                order: 3
+        rateCards:
+        - type: USAGE
+          usageMeters:
+          - rides - local
+          displayName: Local Rides
+          pricingModel: TIERED
+          rateConfig:
+            usageMeterName: rides - local
+            slabs:
+            - rate: 100
+              priceType: PER_UNIT
+              startAfter: 0
+              order: 1
+            - rate: 40
+              priceType: PER_UNIT
+              startAfter: 10
+              order: 2
+            - rate: 10
+              priceType: PER_UNIT
+              startAfter: 50
+              order: 3
         startDate: 2022-01-01T00:00:00
         endDate: 2022-02-01T00:00:00
     PricingScheduleBundle:
       value:
-        ratePayload:
-          type: BUNDLE
-          bundleConfig:
-            rateStrategy: FLAT
-            slabStrategy: TIER
-            bundles:
-            - rate: 100
-              order: 1
-              usageMeters:
-                rides - local:
-                  startAfter: 0
-                rides - intercity:
-                  startAfter: 0
-            - rate: 40
-              order: 2
-              usageMeters:
-                rides - local:
-                  startAfter: 10
-                rides - intercity:
-                  startAfter: 500
-            - rate: 20
-              order: 3
-              usageMeters:
-                rides - local:
-                  startAfter: 50
-                rides - intercity:
-                  startAfter: 2500
+        rateCards:
+        - type: BUNDLE
+          usageMeters:
+          - rides - local
+          - rides - intercity
+          pricingModel: VOLUME
+          aggregation: MAX
+          bundles:
+          - displayName: rides - base bundle
+            usageMeters:
+            - usageMeterName: rides - local
+              slab:
+                rate: 100
+                priceType: PER_UNIT
+                startAfter: 0
+                order: 1
+            - usageMeterName: rides - intercity
+              slab:
+                rate: 100
+                priceType: PER_UNIT
+                startAfter: 0
+                order: 1
+          - name: rides - pro bundle
+            usageMeters:
+            - usageMeterName: rides - local
+              slab:
+                rate: 40
+                priceType: PER_UNIT
+                startAfter: 30
+                order: 2
+            - usageMeterName: rides - intercity
+              slab:
+                rate: 40
+                priceType: PER_UNIT
+                startAfter: 20
+                order: 2
         startDate: 2022-02-01T00:00:00
         endDate: 2022-03-01T00:00:00
     RateCardBundle:
       value:
         type: BUNDLE
-        bundleConfig:
-          rateStrategy: FLAT
-          slabStrategy: TIER
-          bundles:
-          - rate: 100
-            order: 1
-            usageMeters:
-              rides - local:
-                startAfter: 0
-              rides - intercity:
-                startAfter: 0
-          - rate: 40
-            order: 2
-            usageMeters:
-              rides - local:
-                startAfter: 10
-              rides - intercity:
-                startAfter: 500
-          - rate: 20
-            order: 3
-            usageMeters:
-              rides - local:
-                startAfter: 50
-              rides - intercity:
-                startAfter: 2500
+        usageMeters:
+        - rides - local
+        - rides - intercity
+        pricingModel: VOLUME
+        aggregation: MAX
+        bundles:
+        - displayName: rides - base bundle
+          usageMeters:
+          - usageMeterName: rides - local
+            slab:
+              rate: 100
+              priceType: PER_UNIT
+              startAfter: 0
+              order: 1
+          - usageMeterName: rides - intercity
+            slab:
+              rate: 100
+              priceType: PER_UNIT
+              startAfter: 0
+              order: 1
+        - name: rides - pro bundle
+          usageMeters:
+          - usageMeterName: rides - local
+            slab:
+              rate: 40
+              priceType: PER_UNIT
+              startAfter: 30
+              order: 2
+          - usageMeterName: rides - intercity
+            slab:
+              rate: 40
+              priceType: PER_UNIT
+              startAfter: 20
+              order: 2
     RateCardUsage:
       value:
         type: USAGE
-        usageConfig:
-          rides - local:
-            rateStrategy: PER_UNIT
-            slabStrategy: TIER
-            slabs:
-            - rate: 100
-              startAfter: 0
-              order: 1
-            - rate: 40
-              startAfter: 10
-              order: 2
-            - rate: 10
-              startAfter: 50
-              order: 3
+        usageMeters:
+        - rides - local
+        displayName: Local Rides
+        pricingModel: TIERED
+        rateConfig:
+          usageMeterName: rides - local
+          slabs:
+          - rate: 100
+            priceType: PER_UNIT
+            startAfter: 0
+            order: 1
+          - rate: 40
+            priceType: PER_UNIT
+            startAfter: 10
+            order: 2
+          - rate: 10
+            priceType: PER_UNIT
+            startAfter: 50
+            order: 3
     IngestEventRequest:
       summary: example event ingestion request
       value:
@@ -4374,6 +4507,7 @@ components:
             pricePlans:
             - name: pro-plan
               id: 68551191-982b-4663-92fa-38a6f8313e91
+              scheduleId: c0b1306d-f506-43a6-856b-69221efaee6b
               cycleStart: 04-03-2022
               cycleEnd: 04-04-2022
             account:
@@ -4651,7 +4785,7 @@ components:
           schema:
             $ref: '#/components/schemas/SignupRequest'
       description: Payload to create organization
-      required: true
+      required: false
     CreateCustomerRequest:
       content:
         application/json:
@@ -4717,7 +4851,7 @@ components:
         application/json:
           examples:
             EventSchema:
-              $ref: '#/components/examples/EventSchema'
+              $ref: '#/components/examples/CreateEventSchemaRequest'
           schema:
             $ref: '#/components/schemas/CreateEventSchemaRequest'
       description: Payload to create event schema
@@ -4727,7 +4861,7 @@ components:
         application/json:
           examples:
             EventSchema:
-              $ref: '#/components/examples/EventSchema'
+              $ref: '#/components/examples/UpdateEventSchemaRequest'
           schema:
             $ref: '#/components/schemas/UpdateEventSchemaRequest'
       description: Payload to update event schema
@@ -4936,7 +5070,7 @@ components:
       content:
         application/json:
           examples:
-            Customer:
+            PricePlanResponse:
               $ref: '#/components/examples/PricePlan'
           schema:
             $ref: '#/components/schemas/PricePlan'
@@ -4977,7 +5111,6 @@ components:
       properties:
         name:
           maxLength: 50
-          pattern: "^[_a-zA-Z0-9-\\s]{3,50}$"
           type: string
         description:
           maxLength: 500
@@ -5004,7 +5137,6 @@ components:
           type: string
         email:
           maxLength: 100
-          pattern: "^[A-Za-z0-9_+]{8,100}$"
           type: string
         phone:
           maxLength: 30
@@ -5048,7 +5180,6 @@ components:
         billingAddress:
           description: billing address of the customer
           maxLength: 1000
-          minLength: 50
           type: string
         account:
           $ref: '#/components/schemas/CreateAccountRequest'
@@ -5078,7 +5209,6 @@ components:
         billingAddress:
           description: billing address of the customer
           maxLength: 1000
-          minLength: 50
           type: string
       type: object
     CreateAccountRequest:
@@ -5371,72 +5501,51 @@ components:
       additionalProperties: false
       description: Request to create a price plan
       example:
-        rateCard:
-          usageConfig:
-            key:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              name: name
+        pricePlanDetails:
+          pricingCycleConfig:
+            gracePeriod: 3
+            startOffset:
+              dayOffset: dayOffset
+              monthOffset: monthOffset
+            startType: STATIC
+            interval: MONTHLY
+          rateCards:
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
               slabs:
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-          type: USAGE
-          bundleConfig:
-            slabStrategy: TIER
-            rateStrategy: FLAT
-            bundles:
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
         name: name
         description: description
-        pricingCycle:
-          gracePeriod: 3
-          startOffset:
-            dayOffset: dayOffset
-            monthOffset: monthOffset
-          startType: STATIC
-          interval: MONTHLY
       properties:
         name:
           description: Name of the price plan
@@ -5446,93 +5555,67 @@ components:
           description: Description of price plan
           maxLength: 255
           type: string
-        pricingCycle:
-          $ref: '#/components/schemas/PricingCycle'
-        rateCard:
-          $ref: '#/components/schemas/RateCard'
+        pricePlanDetails:
+          $ref: '#/components/schemas/PricePlanDetails'
       required:
       - name
-      - pricingCycle
-      - rateCard
+      - pricePlanDetails
       type: object
     UpdatePricePlanRequest:
       additionalProperties: false
       description: Request to update a price plan
       example:
-        rateCard:
-          usageConfig:
-            key:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              name: name
+        pricePlanDetails:
+          pricingCycleConfig:
+            gracePeriod: 3
+            startOffset:
+              dayOffset: dayOffset
+              monthOffset: monthOffset
+            startType: STATIC
+            interval: MONTHLY
+          rateCards:
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
               slabs:
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-          type: USAGE
-          bundleConfig:
-            slabStrategy: TIER
-            rateStrategy: FLAT
-            bundles:
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
         description: description
-        pricingCycle:
-          gracePeriod: 3
-          startOffset:
-            dayOffset: dayOffset
-            monthOffset: monthOffset
-          startType: STATIC
-          interval: MONTHLY
       properties:
         description:
           description: Description of price plan
           maxLength: 255
           type: string
-        pricingCycle:
-          $ref: '#/components/schemas/PricingCycle'
-        rateCard:
-          $ref: '#/components/schemas/RateCard'
+        pricePlanDetails:
+          $ref: '#/components/schemas/PricePlanDetailsOverride'
       type: object
     AssociatePricePlanRequest:
       additionalProperties: false
@@ -5540,64 +5623,50 @@ components:
       example:
         effectiveUntil: 2000-01-23
         pricePlanName: pricePlanName
-        rateCardOverride:
-          usageConfig:
-            key:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              name: name
+        effectiveFrom: 2000-01-23
+        pricePlanDetailsOverride:
+          pricingCycleConfig:
+            gracePeriod: 3
+            startOffset:
+              dayOffset: dayOffset
+              monthOffset: monthOffset
+            startType: STATIC
+            interval: MONTHLY
+          rateCards:
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
               slabs:
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-          type: USAGE
-          bundleConfig:
-            slabStrategy: TIER
-            rateStrategy: FLAT
-            bundles:
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-        effectiveFrom: 2000-01-23
       properties:
         pricePlanName:
           description: Name of the price plan
@@ -5615,9 +5684,11 @@ components:
             - Expected only if effectiveFrom is present.
           format: date
           type: string
-        rateCardOverride:
-          $ref: '#/components/schemas/RateCard'
+        pricePlanDetailsOverride:
+          $ref: '#/components/schemas/PricePlanDetailsOverride'
       required:
+      - effectiveFrom
+      - effectiveUntil
       - pricePlanName
       type: object
     BaseSuccessResponse:
@@ -5695,7 +5766,6 @@ components:
         billingAddress:
           description: billing address of the customer
           maxLength: 1000
-          minLength: 50
           type: string
         account:
           $ref: '#/components/schemas/Account'
@@ -5859,17 +5929,52 @@ components:
         - usageMeters
         - usageMeters
         createdAt: 2000-01-23T04:56:07.000+00:00
+        pricePlanDetails:
+          pricingCycleConfig:
+            gracePeriod: 3
+            startOffset:
+              dayOffset: dayOffset
+              monthOffset: monthOffset
+            startType: STATIC
+            interval: MONTHLY
+          rateCards:
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
         name: name
         description: description
-        pricingCycle:
-          gracePeriod: 3
-          startOffset:
-            dayOffset: dayOffset
-            monthOffset: monthOffset
-          startType: STATIC
-          interval: MONTHLY
         status: DRAFT
-        pricingType: pricingType
         updatedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         name:
@@ -5887,16 +5992,13 @@ components:
           - ACTIVE
           - ARCHIVED
           type: string
-        pricingCycle:
-          $ref: '#/components/schemas/PricingCycle'
         usageMeters:
           description: Usage meters name linked to the price plan
           items:
             type: string
           type: array
-        pricingType:
-          description: Pricing type of the price plan
-          type: string
+        pricePlanDetails:
+          $ref: '#/components/schemas/PricePlanDetails'
         createdAt:
           format: date-time
           type: string
@@ -5906,8 +6008,7 @@ components:
       required:
       - createdAt
       - name
-      - pricingCycle
-      - pricingType
+      - pricePlanDetails
       - status
       - updatedAt
       - usageMeters
@@ -5920,33 +6021,103 @@ components:
           - usageMeters
           - usageMeters
           createdAt: 2000-01-23T04:56:07.000+00:00
+          pricePlanDetails:
+            pricingCycleConfig:
+              gracePeriod: 3
+              startOffset:
+                dayOffset: dayOffset
+                monthOffset: monthOffset
+              startType: STATIC
+              interval: MONTHLY
+            rateCards:
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
           name: name
           description: description
-          pricingCycle:
-            gracePeriod: 3
-            startOffset:
-              dayOffset: dayOffset
-              monthOffset: monthOffset
-            startType: STATIC
-            interval: MONTHLY
           status: DRAFT
-          pricingType: pricingType
           updatedAt: 2000-01-23T04:56:07.000+00:00
         - usageMeters:
           - usageMeters
           - usageMeters
           createdAt: 2000-01-23T04:56:07.000+00:00
+          pricePlanDetails:
+            pricingCycleConfig:
+              gracePeriod: 3
+              startOffset:
+                dayOffset: dayOffset
+                monthOffset: monthOffset
+              startType: STATIC
+              interval: MONTHLY
+            rateCards:
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
           name: name
           description: description
-          pricingCycle:
-            gracePeriod: 3
-            startOffset:
-              dayOffset: dayOffset
-              monthOffset: monthOffset
-            startType: STATIC
-            interval: MONTHLY
           status: DRAFT
-          pricingType: pricingType
           updatedAt: 2000-01-23T04:56:07.000+00:00
         nextToken: nextToken
         context:
@@ -5961,6 +6132,8 @@ components:
           type: string
         context:
           $ref: '#/components/schemas/PaginationOptions'
+      required:
+      - data
       type: object
     AssociatePricePlanResponse:
       additionalProperties: false
@@ -5969,123 +6142,95 @@ components:
         pricingSchedules:
         - endDate: 2000-01-23T04:56:07.000+00:00
           pricePlanName: pricePlanName
-          override:
-            usageConfig:
-              key:
-                slabStrategy: TIER
-                rateStrategy: FLAT
-                name: name
+          pricePlanDetailsOverride:
+            pricingCycleConfig:
+              gracePeriod: 3
+              startOffset:
+                dayOffset: dayOffset
+                monthOffset: monthOffset
+              startType: STATIC
+              interval: MONTHLY
+            rateCards:
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
                 slabs:
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-            type: USAGE
-            bundleConfig:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              bundles:
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
           startDate: 2000-01-23T04:56:07.000+00:00
         - endDate: 2000-01-23T04:56:07.000+00:00
           pricePlanName: pricePlanName
-          override:
-            usageConfig:
-              key:
-                slabStrategy: TIER
-                rateStrategy: FLAT
-                name: name
+          pricePlanDetailsOverride:
+            pricingCycleConfig:
+              gracePeriod: 3
+              startOffset:
+                dayOffset: dayOffset
+                monthOffset: monthOffset
+              startType: STATIC
+              interval: MONTHLY
+            rateCards:
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
                 slabs:
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-            type: USAGE
-            bundleConfig:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              bundles:
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
           startDate: 2000-01-23T04:56:07.000+00:00
         accountName: accountName
       properties:
@@ -6133,7 +6278,6 @@ components:
         billingAddress:
           description: billing address of the customer
           maxLength: 1000
-          minLength: 50
           type: string
         status:
           description: Status of the customer
@@ -6506,133 +6650,98 @@ components:
       description: Price plan entity
       example:
         pricingSchedule:
-        - endDate: 2000-01-23T04:56:07.000+00:00
-          ratePayload:
-            usageConfig:
-              key:
-                slabStrategy: TIER
-                rateStrategy: FLAT
-                name: name
+        - pricePlanDetails:
+            pricingCycleConfig:
+              gracePeriod: 3
+              startOffset:
+                dayOffset: dayOffset
+                monthOffset: monthOffset
+              startType: STATIC
+              interval: MONTHLY
+            rateCards:
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
                 slabs:
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-            type: USAGE
-            bundleConfig:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              bundles:
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
+          endDate: 2000-01-23T04:56:07.000+00:00
           startDate: 2000-01-23T04:56:07.000+00:00
-        - endDate: 2000-01-23T04:56:07.000+00:00
-          ratePayload:
-            usageConfig:
-              key:
-                slabStrategy: TIER
-                rateStrategy: FLAT
-                name: name
+        - pricePlanDetails:
+            pricingCycleConfig:
+              gracePeriod: 3
+              startOffset:
+                dayOffset: dayOffset
+                monthOffset: monthOffset
+              startType: STATIC
+              interval: MONTHLY
+            rateCards:
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
                 slabs:
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
+                  order: 2
+            - pricingModel: null
+              displayName: displayName
+              rateConfig:
+                usageMeterName: usageMeterName
+                slabs:
+                - startAfter: 6.027456183070403
+                  rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
                 - startAfter: 6.027456183070403
                   rate: 0.8008281904610115
+                  priceType: null
+                  config:
+                    key: config
                   order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-                - startAfter: 6.027456183070403
-                  rate: 0.8008281904610115
-                  order: 2
-            type: USAGE
-            bundleConfig:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              bundles:
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
-              - usageMeters:
-                  key:
-                    startAfter: 2.3021358869347655
-                rate: 5.962133916683182
-                name: name
-                order: 6
+          endDate: 2000-01-23T04:56:07.000+00:00
           startDate: 2000-01-23T04:56:07.000+00:00
         name: name
         description: description
-        pricingCycle:
-          gracePeriod: 3
-          startOffset:
-            dayOffset: dayOffset
-            monthOffset: monthOffset
-          startType: STATIC
-          interval: MONTHLY
         status: DRAFT
       properties:
         name:
@@ -6650,19 +6759,125 @@ components:
           - ACTIVE
           - ARCHIVED
           type: string
-        pricingCycle:
-          $ref: '#/components/schemas/PricingCycle'
         pricingSchedule:
           items:
             $ref: '#/components/schemas/PricingSchedule'
           type: array
       required:
       - name
-      - pricingCycle
       - pricingSchedule
       - status
       type: object
-    PricingCycle:
+    PricePlanDetails:
+      example:
+        pricingCycleConfig:
+          gracePeriod: 3
+          startOffset:
+            dayOffset: dayOffset
+            monthOffset: monthOffset
+          startType: STATIC
+          interval: MONTHLY
+        rateCards:
+        - pricingModel: null
+          displayName: displayName
+          rateConfig:
+            usageMeterName: usageMeterName
+            slabs:
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+        - pricingModel: null
+          displayName: displayName
+          rateConfig:
+            usageMeterName: usageMeterName
+            slabs:
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+      properties:
+        pricingCycleConfig:
+          $ref: '#/components/schemas/PricingCycleConfig'
+        rateCards:
+          items:
+            $ref: '#/components/schemas/RateCard'
+          minItems: 1
+          type: array
+      required:
+      - pricingCycleConfig
+      - rateCards
+      type: object
+    PricePlanDetailsOverride:
+      example:
+        pricingCycleConfig:
+          gracePeriod: 3
+          startOffset:
+            dayOffset: dayOffset
+            monthOffset: monthOffset
+          startType: STATIC
+          interval: MONTHLY
+        rateCards:
+        - pricingModel: null
+          displayName: displayName
+          rateConfig:
+            usageMeterName: usageMeterName
+            slabs:
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+        - pricingModel: null
+          displayName: displayName
+          rateConfig:
+            usageMeterName: usageMeterName
+            slabs:
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+            - startAfter: 6.027456183070403
+              rate: 0.8008281904610115
+              priceType: null
+              config:
+                key: config
+              order: 2
+      properties:
+        pricingCycleConfig:
+          $ref: '#/components/schemas/PricingCycleConfig'
+        rateCards:
+          items:
+            $ref: '#/components/schemas/RateCard'
+          minItems: 1
+          type: array
+      type: object
+    PricingCycleConfig:
       description: Represents configurations related to pricing cycle
       example:
         gracePeriod: 3
@@ -6684,7 +6899,7 @@ components:
           - STATIC
           type: string
         startOffset:
-          $ref: '#/components/schemas/PricingCycle_startOffset'
+          $ref: '#/components/schemas/PricingCycleConfig_startOffset'
         gracePeriod:
           example: 3
           format: int32
@@ -6700,68 +6915,54 @@ components:
       description: "Represents effectiveness period and config of a price plan. i.e,\
         \ price plan bound by time."
       example:
-        endDate: 2000-01-23T04:56:07.000+00:00
-        ratePayload:
-          usageConfig:
-            key:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              name: name
+        pricePlanDetails:
+          pricingCycleConfig:
+            gracePeriod: 3
+            startOffset:
+              dayOffset: dayOffset
+              monthOffset: monthOffset
+            startType: STATIC
+            interval: MONTHLY
+          rateCards:
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
               slabs:
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-          type: USAGE
-          bundleConfig:
-            slabStrategy: TIER
-            rateStrategy: FLAT
-            bundles:
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
+        endDate: 2000-01-23T04:56:07.000+00:00
         startDate: 2000-01-23T04:56:07.000+00:00
       properties:
-        ratePayload:
-          $ref: '#/components/schemas/RateCard'
+        pricePlanDetails:
+          $ref: '#/components/schemas/PricePlanDetails'
         startDate:
           format: date-time
           type: string
@@ -6779,69 +6980,55 @@ components:
       example:
         endDate: 2000-01-23T04:56:07.000+00:00
         pricePlanName: pricePlanName
-        override:
-          usageConfig:
-            key:
-              slabStrategy: TIER
-              rateStrategy: FLAT
-              name: name
+        pricePlanDetailsOverride:
+          pricingCycleConfig:
+            gracePeriod: 3
+            startOffset:
+              dayOffset: dayOffset
+              monthOffset: monthOffset
+            startType: STATIC
+            interval: MONTHLY
+          rateCards:
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
               slabs:
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
+                order: 2
+          - pricingModel: null
+            displayName: displayName
+            rateConfig:
+              usageMeterName: usageMeterName
+              slabs:
+              - startAfter: 6.027456183070403
+                rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
               - startAfter: 6.027456183070403
                 rate: 0.8008281904610115
+                priceType: null
+                config:
+                  key: config
                 order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-              - startAfter: 6.027456183070403
-                rate: 0.8008281904610115
-                order: 2
-          type: USAGE
-          bundleConfig:
-            slabStrategy: TIER
-            rateStrategy: FLAT
-            bundles:
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
-            - usageMeters:
-                key:
-                  startAfter: 2.3021358869347655
-              rate: 5.962133916683182
-              name: name
-              order: 6
         startDate: 2000-01-23T04:56:07.000+00:00
       properties:
         pricePlanName:
           type: string
-        override:
-          $ref: '#/components/schemas/RateCard'
+        pricePlanDetailsOverride:
+          $ref: '#/components/schemas/PricePlanDetailsOverride'
         startDate:
           format: date-time
           type: string
@@ -6854,95 +7041,109 @@ components:
       - startDate
       type: object
     RateCard:
-      description: Represents a rate card
       example:
-        usageConfig:
-          key:
-            slabStrategy: TIER
-            rateStrategy: FLAT
-            name: name
-            slabs:
-            - startAfter: 6.027456183070403
-              rate: 0.8008281904610115
-              order: 2
-            - startAfter: 6.027456183070403
-              rate: 0.8008281904610115
-              order: 2
-            - startAfter: 6.027456183070403
-              rate: 0.8008281904610115
-              order: 2
-            - startAfter: 6.027456183070403
-              rate: 0.8008281904610115
-              order: 2
-            - startAfter: 6.027456183070403
-              rate: 0.8008281904610115
-              order: 2
-        type: USAGE
-        bundleConfig:
-          slabStrategy: TIER
-          rateStrategy: FLAT
-          bundles:
-          - usageMeters:
-              key:
-                startAfter: 2.3021358869347655
-            rate: 5.962133916683182
-            name: name
-            order: 6
-          - usageMeters:
-              key:
-                startAfter: 2.3021358869347655
-            rate: 5.962133916683182
-            name: name
-            order: 6
-          - usageMeters:
-              key:
-                startAfter: 2.3021358869347655
-            rate: 5.962133916683182
-            name: name
-            order: 6
-          - usageMeters:
-              key:
-                startAfter: 2.3021358869347655
-            rate: 5.962133916683182
-            name: name
-            order: 6
-          - usageMeters:
-              key:
-                startAfter: 2.3021358869347655
-            rate: 5.962133916683182
-            name: name
-            order: 6
+        pricingModel: null
+        displayName: displayName
+        rateConfig:
+          usageMeterName: usageMeterName
+          slabs:
+          - startAfter: 6.027456183070403
+            rate: 0.8008281904610115
+            priceType: null
+            config:
+              key: config
+            order: 2
+          - startAfter: 6.027456183070403
+            rate: 0.8008281904610115
+            priceType: null
+            config:
+              key: config
+            order: 2
       properties:
-        type:
-          enum:
-          - USAGE
-          - BUNDLE
+        displayName:
           type: string
-        usageConfig:
-          additionalProperties:
-            $ref: '#/components/schemas/RateCardUsage_value'
-          type: object
-        bundleConfig:
-          $ref: '#/components/schemas/RateCardBundle'
+        pricingModel:
+          $ref: '#/components/schemas/PricingModel'
+        rateConfig:
+          $ref: '#/components/schemas/RateConfigUsage'
       required:
-      - type
+      - displayName
+      - pricingModel
+      - rateConfig
       type: object
-    RateCardUsage:
-      additionalProperties:
-        $ref: '#/components/schemas/RateCardUsage_value'
+    RateCardType:
+      enum:
+      - USAGE
+      - BUNDLE
+      type: string
+    PricingModel:
+      enum:
+      - TIERED
+      - VOLUME
+      type: string
+    PriceType:
+      enum:
+      - FLAT
+      - PER_UNIT
+      - PACKAGE
+      type: string
+    RateCardBundleAggregation:
+      enum:
+      - MAX
+      - MIN
+      - SUM
+      - AVG
+      type: string
+    RateConfigUsage:
+      description: Contains all rate related configurations
+      example:
+        usageMeterName: usageMeterName
+        slabs:
+        - startAfter: 6.027456183070403
+          rate: 0.8008281904610115
+          priceType: null
+          config:
+            key: config
+          order: 2
+        - startAfter: 6.027456183070403
+          rate: 0.8008281904610115
+          priceType: null
+          config:
+            key: config
+          order: 2
+      properties:
+        usageMeterName:
+          type: string
+        slabs:
+          items:
+            $ref: '#/components/schemas/SlabUsage'
+          minItems: 1
+          type: array
+      required:
+      - slabs
+      - usageMeterName
       type: object
-    UsageStrategy:
-      description: Represents a pricing strategy (rates + slabs) for usage price plan
+    SlabUsage:
+      description: Represents a pricing priceType (rates + slabs) for usage price
+        plan
       example:
         startAfter: 6.027456183070403
         rate: 0.8008281904610115
+        priceType: null
+        config:
+          key: config
         order: 2
       properties:
         rate:
           type: number
         startAfter:
-          format: double
           type: number
+        priceType:
+          $ref: '#/components/schemas/PriceType'
+        config:
+          additionalProperties:
+            type: string
+          type: object
         order:
           format: int32
           maximum: 10
@@ -6950,95 +7151,56 @@ components:
           type: integer
       required:
       - order
+      - priceType
       - rate
       - startAfter
       type: object
-    RateCardBundle:
-      example:
-        slabStrategy: TIER
-        rateStrategy: FLAT
-        bundles:
-        - usageMeters:
-            key:
-              startAfter: 2.3021358869347655
-          rate: 5.962133916683182
-          name: name
-          order: 6
-        - usageMeters:
-            key:
-              startAfter: 2.3021358869347655
-          rate: 5.962133916683182
-          name: name
-          order: 6
-        - usageMeters:
-            key:
-              startAfter: 2.3021358869347655
-          rate: 5.962133916683182
-          name: name
-          order: 6
-        - usageMeters:
-            key:
-              startAfter: 2.3021358869347655
-          rate: 5.962133916683182
-          name: name
-          order: 6
-        - usageMeters:
-            key:
-              startAfter: 2.3021358869347655
-          rate: 5.962133916683182
-          name: name
-          order: 6
+    RateConfigBundle:
+      description: TODO
       properties:
-        rateStrategy:
-          enum:
-          - FLAT
+        usageMeterName:
           type: string
-        slabStrategy:
-          enum:
-          - TIER
+        slab:
+          $ref: '#/components/schemas/SlabBundle'
+      required:
+      - slab
+      - usageMeterName
+      type: object
+    SlabBundle:
+      description: TODO
+      properties:
+        rate:
+          type: number
+        startAfter:
+          type: number
+        priceType:
+          $ref: '#/components/schemas/PriceType'
+        config:
+          additionalProperties:
+            type: string
+          type: object
+      required:
+      - priceType
+      - rate
+      - startAfter
+      type: object
+    Bundle:
+      description: TODO
+      properties:
+        displayName:
           type: string
-        bundles:
+        order:
+          format: int32
+          type: integer
+        rateConfigs:
           items:
-            $ref: '#/components/schemas/BundleStrategy'
-          maxItems: 10
+            $ref: '#/components/schemas/RateConfigBundle'
           minItems: 1
           type: array
       required:
-      - bundles
-      - rateStrategy
-      - slabStrategy
-      type: object
-    BundleStrategy:
-      description: Represents a pricing strategy (rates + slabs) for bundle price
-        plan
-      example:
-        usageMeters:
-          key:
-            startAfter: 2.3021358869347655
-        rate: 5.962133916683182
-        name: name
-        order: 6
-      properties:
-        name:
-          maxLength: 50
-          minLength: 3
-          type: string
-        rate:
-          type: number
-        order:
-          format: int32
-          maximum: 10
-          minimum: 1
-          type: integer
-        usageMeters:
-          additionalProperties:
-            $ref: '#/components/schemas/BundleStrategy_usageMeters_value'
-          type: object
-      required:
-      - name
+      - displayName
       - order
-      - rate
-      - usageMeters
+      - rateConfigs
       type: object
     IngestEventRequest:
       additionalProperties: false
@@ -7506,6 +7668,8 @@ components:
           items:
             $ref: '#/components/schemas/EventWithStatusAndEventPipelineInfo'
           type: array
+      required:
+      - events
       type: object
     GetEventsResponse:
       additionalProperties: false
@@ -7715,6 +7879,7 @@ components:
           - INGESTION_FAILED
           - INGESTION_FAILED_SCHEMA_NOT_DEFINED
           - INGESTION_FAILED_UNITS_INVALID
+          - INGESTION_FAILED_EVENT_INVALID
           - INGESTION_COMPLETED_NO_MATCHING_METERS
           - INGESTION_COMPLETED_EVENT_METERED
           - INGESTION_COMPLETED_EVENT_NOT_METERED
@@ -8063,12 +8228,10 @@ components:
       type: object
     EventSchemaListData_allOf:
       properties:
-        associatedUsageMeters:
-          items:
-            type: string
-          type: array
+        usageMetersCount:
+          type: integer
       type: object
-    PricingCycle_startOffset:
+    PricingCycleConfig_startOffset:
       description: "Represents the start of pricing cycle in terms of\n - dayOffset\
         \ - number of days from beginning of month and\n - monthOffset - number of\
         \ months from beginning of interval (quarter, half-year or year)\nNote: If\
@@ -8107,62 +8270,6 @@ components:
       required:
       - dayOffset
       - monthOffset
-      type: object
-    RateCardUsage_value:
-      description: Represents rate card of a price plan of usage type
-      example:
-        slabStrategy: TIER
-        rateStrategy: FLAT
-        name: name
-        slabs:
-        - startAfter: 6.027456183070403
-          rate: 0.8008281904610115
-          order: 2
-        - startAfter: 6.027456183070403
-          rate: 0.8008281904610115
-          order: 2
-        - startAfter: 6.027456183070403
-          rate: 0.8008281904610115
-          order: 2
-        - startAfter: 6.027456183070403
-          rate: 0.8008281904610115
-          order: 2
-        - startAfter: 6.027456183070403
-          rate: 0.8008281904610115
-          order: 2
-      properties:
-        name:
-          type: string
-        rateStrategy:
-          enum:
-          - FLAT
-          - PER_UNIT
-          type: string
-        slabStrategy:
-          enum:
-          - TIER
-          type: string
-        slabs:
-          items:
-            $ref: '#/components/schemas/UsageStrategy'
-          maxItems: 10
-          minItems: 1
-          type: array
-      required:
-      - name
-      - rateStrategy
-      - slabStrategy
-      - slabs
-      type: object
-    BundleStrategy_usageMeters_value:
-      example:
-        startAfter: 2.3021358869347655
-      properties:
-        startAfter:
-          format: double
-          type: number
-      required:
-      - startAfter
       type: object
     StatusResponse_headers:
       additionalProperties: true
@@ -8217,6 +8324,9 @@ components:
         id:
           format: uuid
           type: string
+        scheduleId:
+          format: uuid
+          type: string
         cycleStart:
           format: date
           type: string
@@ -8233,6 +8343,7 @@ components:
       - cycleStart
       - id
       - name
+      - scheduleId
       type: object
     EventPipelineInfoAccount:
       additionalProperties: false
@@ -8280,7 +8391,13 @@ components:
         \     | CUSTOMER_ID      | ACCOUNT_ID, USAGE_METER_NAME | None           \
         \          | *\\<at most one valid customer ID>               |\n| REVENUE\
         \     | USAGE_METER_NAME | ACCOUNT_ID, USAGE_METER_NAME | None           \
-        \          | *\\<one or more valid usage meter name>          |\n"
+        \          | *\\<one or more valid usage meter name>          |\n| EVENTS\
+        \      | ORGANIZATION_ID  | ACCOUNT_ID, USAGE_METER_NAME | <From auth token>\
+        \        |                                                 |\n| USAGE    \
+        \   | ORGANIZATION_ID  | ACCOUNT_ID, USAGE_METER_NAME | <From auth token>\
+        \        |                                                 |\n| REVENUE  \
+        \   | ORGANIZATION_ID  | ACCOUNT_ID, USAGE_METER_NAME | <From auth token>\
+        \        |                                                 |\n"
       example:
         fieldName: fieldName
         fieldValues:

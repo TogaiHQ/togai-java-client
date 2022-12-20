@@ -26,9 +26,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.io.Serializable;
 
@@ -142,9 +140,9 @@ public class EventSchemaListData implements Serializable {
   @SerializedName(SERIALIZED_NAME_UPDATED_AT)
   private OffsetDateTime updatedAt;
 
-  public static final String SERIALIZED_NAME_ASSOCIATED_USAGE_METERS = "associatedUsageMeters";
-  @SerializedName(SERIALIZED_NAME_ASSOCIATED_USAGE_METERS)
-  private List<String> associatedUsageMeters = null;
+  public static final String SERIALIZED_NAME_USAGE_METERS_COUNT = "usageMetersCount";
+  @SerializedName(SERIALIZED_NAME_USAGE_METERS_COUNT)
+  private Integer usageMetersCount;
 
   public EventSchemaListData() {
   }
@@ -347,34 +345,26 @@ public class EventSchemaListData implements Serializable {
   }
 
 
-  public EventSchemaListData associatedUsageMeters(List<String> associatedUsageMeters) {
+  public EventSchemaListData usageMetersCount(Integer usageMetersCount) {
     
-    this.associatedUsageMeters = associatedUsageMeters;
-    return this;
-  }
-
-  public EventSchemaListData addAssociatedUsageMetersItem(String associatedUsageMetersItem) {
-    if (this.associatedUsageMeters == null) {
-      this.associatedUsageMeters = new ArrayList<>();
-    }
-    this.associatedUsageMeters.add(associatedUsageMetersItem);
+    this.usageMetersCount = usageMetersCount;
     return this;
   }
 
    /**
-   * Get associatedUsageMeters
-   * @return associatedUsageMeters
+   * Get usageMetersCount
+   * @return usageMetersCount
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public List<String> getAssociatedUsageMeters() {
-    return associatedUsageMeters;
+  public Integer getUsageMetersCount() {
+    return usageMetersCount;
   }
 
 
-  public void setAssociatedUsageMeters(List<String> associatedUsageMeters) {
-    this.associatedUsageMeters = associatedUsageMeters;
+  public void setUsageMetersCount(Integer usageMetersCount) {
+    this.usageMetersCount = usageMetersCount;
   }
 
 
@@ -396,12 +386,12 @@ public class EventSchemaListData implements Serializable {
         Objects.equals(this.dimensions, eventSchemaListData.dimensions) &&
         Objects.equals(this.createdAt, eventSchemaListData.createdAt) &&
         Objects.equals(this.updatedAt, eventSchemaListData.updatedAt) &&
-        Objects.equals(this.associatedUsageMeters, eventSchemaListData.associatedUsageMeters);
+        Objects.equals(this.usageMetersCount, eventSchemaListData.usageMetersCount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, description, version, status, attributes, dimensions, createdAt, updatedAt, associatedUsageMeters);
+    return Objects.hash(name, description, version, status, attributes, dimensions, createdAt, updatedAt, usageMetersCount);
   }
 
   @Override
@@ -416,7 +406,7 @@ public class EventSchemaListData implements Serializable {
     sb.append("    dimensions: ").append(toIndentedString(dimensions)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
-    sb.append("    associatedUsageMeters: ").append(toIndentedString(associatedUsageMeters)).append("\n");
+    sb.append("    usageMetersCount: ").append(toIndentedString(usageMetersCount)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -447,7 +437,7 @@ public class EventSchemaListData implements Serializable {
     openapiFields.add("dimensions");
     openapiFields.add("createdAt");
     openapiFields.add("updatedAt");
-    openapiFields.add("associatedUsageMeters");
+    openapiFields.add("usageMetersCount");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -517,10 +507,6 @@ public class EventSchemaListData implements Serializable {
         for (int i = 0; i < jsonArraydimensions.size(); i++) {
           DimensionsSchema.validateJsonObject(jsonArraydimensions.get(i).getAsJsonObject());
         };
-      }
-      // ensure the json data is an array
-      if ((jsonObj.get("associatedUsageMeters") != null && !jsonObj.get("associatedUsageMeters").isJsonNull()) && !jsonObj.get("associatedUsageMeters").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `associatedUsageMeters` to be an array in the JSON string but got `%s`", jsonObj.get("associatedUsageMeters").toString()));
       }
   }
 

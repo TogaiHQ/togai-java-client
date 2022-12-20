@@ -20,11 +20,12 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.togai.client.models.PricingModel;
-import com.togai.client.models.RateConfigUsage;
+import com.togai.client.models.RateConfigBundle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.Serializable;
 
 import com.google.gson.Gson;
@@ -48,28 +49,29 @@ import java.util.Set;
 import com.togai.client.JSON;
 
 /**
- * RateCard
+ * TODO
  */
+@ApiModel(description = "TODO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class RateCard implements Serializable {
+public class Bundle implements Serializable {
   private static final long serialVersionUID = 1L;
 
   public static final String SERIALIZED_NAME_DISPLAY_NAME = "displayName";
   @SerializedName(SERIALIZED_NAME_DISPLAY_NAME)
   private String displayName;
 
-  public static final String SERIALIZED_NAME_PRICING_MODEL = "pricingModel";
-  @SerializedName(SERIALIZED_NAME_PRICING_MODEL)
-  private PricingModel pricingModel;
+  public static final String SERIALIZED_NAME_ORDER = "order";
+  @SerializedName(SERIALIZED_NAME_ORDER)
+  private Integer order;
 
-  public static final String SERIALIZED_NAME_RATE_CONFIG = "rateConfig";
-  @SerializedName(SERIALIZED_NAME_RATE_CONFIG)
-  private RateConfigUsage rateConfig;
+  public static final String SERIALIZED_NAME_RATE_CONFIGS = "rateConfigs";
+  @SerializedName(SERIALIZED_NAME_RATE_CONFIGS)
+  private List<RateConfigBundle> rateConfigs = new ArrayList<>();
 
-  public RateCard() {
+  public Bundle() {
   }
 
-  public RateCard displayName(String displayName) {
+  public Bundle displayName(String displayName) {
     
     this.displayName = displayName;
     return this;
@@ -92,49 +94,54 @@ public class RateCard implements Serializable {
   }
 
 
-  public RateCard pricingModel(PricingModel pricingModel) {
+  public Bundle order(Integer order) {
     
-    this.pricingModel = pricingModel;
+    this.order = order;
     return this;
   }
 
    /**
-   * Get pricingModel
-   * @return pricingModel
+   * Get order
+   * @return order
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public PricingModel getPricingModel() {
-    return pricingModel;
+  public Integer getOrder() {
+    return order;
   }
 
 
-  public void setPricingModel(PricingModel pricingModel) {
-    this.pricingModel = pricingModel;
+  public void setOrder(Integer order) {
+    this.order = order;
   }
 
 
-  public RateCard rateConfig(RateConfigUsage rateConfig) {
+  public Bundle rateConfigs(List<RateConfigBundle> rateConfigs) {
     
-    this.rateConfig = rateConfig;
+    this.rateConfigs = rateConfigs;
+    return this;
+  }
+
+  public Bundle addRateConfigsItem(RateConfigBundle rateConfigsItem) {
+    this.rateConfigs.add(rateConfigsItem);
     return this;
   }
 
    /**
-   * Get rateConfig
-   * @return rateConfig
+   * Get rateConfigs
+   * @return rateConfigs
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public RateConfigUsage getRateConfig() {
-    return rateConfig;
+  public List<RateConfigBundle> getRateConfigs() {
+    return rateConfigs;
   }
 
 
-  public void setRateConfig(RateConfigUsage rateConfig) {
-    this.rateConfig = rateConfig;
+  public void setRateConfigs(List<RateConfigBundle> rateConfigs) {
+    this.rateConfigs = rateConfigs;
   }
 
 
@@ -147,24 +154,24 @@ public class RateCard implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RateCard rateCard = (RateCard) o;
-    return Objects.equals(this.displayName, rateCard.displayName) &&
-        Objects.equals(this.pricingModel, rateCard.pricingModel) &&
-        Objects.equals(this.rateConfig, rateCard.rateConfig);
+    Bundle bundle = (Bundle) o;
+    return Objects.equals(this.displayName, bundle.displayName) &&
+        Objects.equals(this.order, bundle.order) &&
+        Objects.equals(this.rateConfigs, bundle.rateConfigs);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(displayName, pricingModel, rateConfig);
+    return Objects.hash(displayName, order, rateConfigs);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RateCard {\n");
+    sb.append("class Bundle {\n");
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
-    sb.append("    pricingModel: ").append(toIndentedString(pricingModel)).append("\n");
-    sb.append("    rateConfig: ").append(toIndentedString(rateConfig)).append("\n");
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
+    sb.append("    rateConfigs: ").append(toIndentedString(rateConfigs)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -188,41 +195,41 @@ public class RateCard implements Serializable {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
     openapiFields.add("displayName");
-    openapiFields.add("pricingModel");
-    openapiFields.add("rateConfig");
+    openapiFields.add("order");
+    openapiFields.add("rateConfigs");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("displayName");
-    openapiRequiredFields.add("pricingModel");
-    openapiRequiredFields.add("rateConfig");
+    openapiRequiredFields.add("order");
+    openapiRequiredFields.add("rateConfigs");
   }
 
  /**
   * Validates the JSON Object and throws an exception if issues found
   *
   * @param jsonObj JSON Object
-  * @throws IOException if the JSON Object is invalid with respect to RateCard
+  * @throws IOException if the JSON Object is invalid with respect to Bundle
   */
   public static void validateJsonObject(JsonObject jsonObj) throws IOException {
       if (jsonObj == null) {
-        if (RateCard.openapiRequiredFields.isEmpty()) {
+        if (Bundle.openapiRequiredFields.isEmpty()) {
           return;
         } else { // has required fields
-          throw new IllegalArgumentException(String.format("The required field(s) %s in RateCard is not found in the empty JSON string", RateCard.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in Bundle is not found in the empty JSON string", Bundle.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!RateCard.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `RateCard` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        if (!Bundle.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `Bundle` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : RateCard.openapiRequiredFields) {
+      for (String requiredField : Bundle.openapiRequiredFields) {
         if (jsonObj.get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
@@ -230,9 +237,17 @@ public class RateCard implements Serializable {
       if ((jsonObj.get("displayName") != null && !jsonObj.get("displayName").isJsonNull()) && !jsonObj.get("displayName").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `displayName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("displayName").toString()));
       }
-      // validate the optional field `rateConfig`
-      if (jsonObj.get("rateConfig") != null && !jsonObj.get("rateConfig").isJsonNull()) {
-        RateConfigUsage.validateJsonObject(jsonObj.getAsJsonObject("rateConfig"));
+      JsonArray jsonArrayrateConfigs = jsonObj.getAsJsonArray("rateConfigs");
+      if (jsonArrayrateConfigs != null) {
+        // ensure the json data is an array
+        if (!jsonObj.get("rateConfigs").isJsonArray()) {
+          throw new IllegalArgumentException(String.format("Expected the field `rateConfigs` to be an array in the JSON string but got `%s`", jsonObj.get("rateConfigs").toString()));
+        }
+
+        // validate the optional field `rateConfigs` (array)
+        for (int i = 0; i < jsonArrayrateConfigs.size(); i++) {
+          RateConfigBundle.validateJsonObject(jsonArrayrateConfigs.get(i).getAsJsonObject());
+        };
       }
   }
 
@@ -240,22 +255,22 @@ public class RateCard implements Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!RateCard.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'RateCard' and its subtypes
+       if (!Bundle.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'Bundle' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<RateCard> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(RateCard.class));
+       final TypeAdapter<Bundle> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(Bundle.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<RateCard>() {
+       return (TypeAdapter<T>) new TypeAdapter<Bundle>() {
            @Override
-           public void write(JsonWriter out, RateCard value) throws IOException {
+           public void write(JsonWriter out, Bundle value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public RateCard read(JsonReader in) throws IOException {
+           public Bundle read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
              return thisAdapter.fromJsonTree(jsonObj);
@@ -266,18 +281,18 @@ public class RateCard implements Serializable {
   }
 
  /**
-  * Create an instance of RateCard given an JSON string
+  * Create an instance of Bundle given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of RateCard
-  * @throws IOException if the JSON string is invalid with respect to RateCard
+  * @return An instance of Bundle
+  * @throws IOException if the JSON string is invalid with respect to Bundle
   */
-  public static RateCard fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, RateCard.class);
+  public static Bundle fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, Bundle.class);
   }
 
  /**
-  * Convert an instance of RateCard to an JSON string
+  * Convert an instance of Bundle to an JSON string
   *
   * @return JSON string
   */

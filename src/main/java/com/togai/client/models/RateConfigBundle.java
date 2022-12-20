@@ -20,6 +20,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.togai.client.models.SlabBundle;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
@@ -46,39 +47,67 @@ import java.util.Set;
 import com.togai.client.JSON;
 
 /**
- * BundleStrategyUsageMetersValue
+ * TODO
  */
+@ApiModel(description = "TODO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class BundleStrategyUsageMetersValue implements Serializable {
+public class RateConfigBundle implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public static final String SERIALIZED_NAME_START_AFTER = "startAfter";
-  @SerializedName(SERIALIZED_NAME_START_AFTER)
-  private Double startAfter;
+  public static final String SERIALIZED_NAME_USAGE_METER_NAME = "usageMeterName";
+  @SerializedName(SERIALIZED_NAME_USAGE_METER_NAME)
+  private String usageMeterName;
 
-  public BundleStrategyUsageMetersValue() {
+  public static final String SERIALIZED_NAME_SLAB = "slab";
+  @SerializedName(SERIALIZED_NAME_SLAB)
+  private SlabBundle slab;
+
+  public RateConfigBundle() {
   }
 
-  public BundleStrategyUsageMetersValue startAfter(Double startAfter) {
+  public RateConfigBundle usageMeterName(String usageMeterName) {
     
-    this.startAfter = startAfter;
+    this.usageMeterName = usageMeterName;
     return this;
   }
 
    /**
-   * Get startAfter
-   * @return startAfter
+   * Get usageMeterName
+   * @return usageMeterName
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public Double getStartAfter() {
-    return startAfter;
+  public String getUsageMeterName() {
+    return usageMeterName;
   }
 
 
-  public void setStartAfter(Double startAfter) {
-    this.startAfter = startAfter;
+  public void setUsageMeterName(String usageMeterName) {
+    this.usageMeterName = usageMeterName;
+  }
+
+
+  public RateConfigBundle slab(SlabBundle slab) {
+    
+    this.slab = slab;
+    return this;
+  }
+
+   /**
+   * Get slab
+   * @return slab
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public SlabBundle getSlab() {
+    return slab;
+  }
+
+
+  public void setSlab(SlabBundle slab) {
+    this.slab = slab;
   }
 
 
@@ -91,20 +120,22 @@ public class BundleStrategyUsageMetersValue implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    BundleStrategyUsageMetersValue bundleStrategyUsageMetersValue = (BundleStrategyUsageMetersValue) o;
-    return Objects.equals(this.startAfter, bundleStrategyUsageMetersValue.startAfter);
+    RateConfigBundle rateConfigBundle = (RateConfigBundle) o;
+    return Objects.equals(this.usageMeterName, rateConfigBundle.usageMeterName) &&
+        Objects.equals(this.slab, rateConfigBundle.slab);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startAfter);
+    return Objects.hash(usageMeterName, slab);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class BundleStrategyUsageMetersValue {\n");
-    sb.append("    startAfter: ").append(toIndentedString(startAfter)).append("\n");
+    sb.append("class RateConfigBundle {\n");
+    sb.append("    usageMeterName: ").append(toIndentedString(usageMeterName)).append("\n");
+    sb.append("    slab: ").append(toIndentedString(slab)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -127,41 +158,50 @@ public class BundleStrategyUsageMetersValue implements Serializable {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("startAfter");
+    openapiFields.add("usageMeterName");
+    openapiFields.add("slab");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("startAfter");
+    openapiRequiredFields.add("usageMeterName");
+    openapiRequiredFields.add("slab");
   }
 
  /**
   * Validates the JSON Object and throws an exception if issues found
   *
   * @param jsonObj JSON Object
-  * @throws IOException if the JSON Object is invalid with respect to BundleStrategyUsageMetersValue
+  * @throws IOException if the JSON Object is invalid with respect to RateConfigBundle
   */
   public static void validateJsonObject(JsonObject jsonObj) throws IOException {
       if (jsonObj == null) {
-        if (BundleStrategyUsageMetersValue.openapiRequiredFields.isEmpty()) {
+        if (RateConfigBundle.openapiRequiredFields.isEmpty()) {
           return;
         } else { // has required fields
-          throw new IllegalArgumentException(String.format("The required field(s) %s in BundleStrategyUsageMetersValue is not found in the empty JSON string", BundleStrategyUsageMetersValue.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in RateConfigBundle is not found in the empty JSON string", RateConfigBundle.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!BundleStrategyUsageMetersValue.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `BundleStrategyUsageMetersValue` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        if (!RateConfigBundle.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `RateConfigBundle` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : BundleStrategyUsageMetersValue.openapiRequiredFields) {
+      for (String requiredField : RateConfigBundle.openapiRequiredFields) {
         if (jsonObj.get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
+      }
+      if ((jsonObj.get("usageMeterName") != null && !jsonObj.get("usageMeterName").isJsonNull()) && !jsonObj.get("usageMeterName").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `usageMeterName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("usageMeterName").toString()));
+      }
+      // validate the optional field `slab`
+      if (jsonObj.get("slab") != null && !jsonObj.get("slab").isJsonNull()) {
+        SlabBundle.validateJsonObject(jsonObj.getAsJsonObject("slab"));
       }
   }
 
@@ -169,22 +209,22 @@ public class BundleStrategyUsageMetersValue implements Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!BundleStrategyUsageMetersValue.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'BundleStrategyUsageMetersValue' and its subtypes
+       if (!RateConfigBundle.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'RateConfigBundle' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<BundleStrategyUsageMetersValue> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(BundleStrategyUsageMetersValue.class));
+       final TypeAdapter<RateConfigBundle> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(RateConfigBundle.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<BundleStrategyUsageMetersValue>() {
+       return (TypeAdapter<T>) new TypeAdapter<RateConfigBundle>() {
            @Override
-           public void write(JsonWriter out, BundleStrategyUsageMetersValue value) throws IOException {
+           public void write(JsonWriter out, RateConfigBundle value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public BundleStrategyUsageMetersValue read(JsonReader in) throws IOException {
+           public RateConfigBundle read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
              return thisAdapter.fromJsonTree(jsonObj);
@@ -195,18 +235,18 @@ public class BundleStrategyUsageMetersValue implements Serializable {
   }
 
  /**
-  * Create an instance of BundleStrategyUsageMetersValue given an JSON string
+  * Create an instance of RateConfigBundle given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of BundleStrategyUsageMetersValue
-  * @throws IOException if the JSON string is invalid with respect to BundleStrategyUsageMetersValue
+  * @return An instance of RateConfigBundle
+  * @throws IOException if the JSON string is invalid with respect to RateConfigBundle
   */
-  public static BundleStrategyUsageMetersValue fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, BundleStrategyUsageMetersValue.class);
+  public static RateConfigBundle fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, RateConfigBundle.class);
   }
 
  /**
-  * Convert an instance of BundleStrategyUsageMetersValue to an JSON string
+  * Convert an instance of RateConfigBundle to an JSON string
   *
   * @return JSON string
   */

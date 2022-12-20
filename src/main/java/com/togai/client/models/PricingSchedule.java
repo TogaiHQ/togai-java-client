@@ -20,7 +20,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.togai.client.models.RateCard;
+import com.togai.client.models.PricePlanDetails;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
@@ -55,9 +55,9 @@ import com.togai.client.JSON;
 public class PricingSchedule implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public static final String SERIALIZED_NAME_RATE_PAYLOAD = "ratePayload";
-  @SerializedName(SERIALIZED_NAME_RATE_PAYLOAD)
-  private RateCard ratePayload;
+  public static final String SERIALIZED_NAME_PRICE_PLAN_DETAILS = "pricePlanDetails";
+  @SerializedName(SERIALIZED_NAME_PRICE_PLAN_DETAILS)
+  private PricePlanDetails pricePlanDetails;
 
   public static final String SERIALIZED_NAME_START_DATE = "startDate";
   @SerializedName(SERIALIZED_NAME_START_DATE)
@@ -70,26 +70,26 @@ public class PricingSchedule implements Serializable {
   public PricingSchedule() {
   }
 
-  public PricingSchedule ratePayload(RateCard ratePayload) {
+  public PricingSchedule pricePlanDetails(PricePlanDetails pricePlanDetails) {
     
-    this.ratePayload = ratePayload;
+    this.pricePlanDetails = pricePlanDetails;
     return this;
   }
 
    /**
-   * Get ratePayload
-   * @return ratePayload
+   * Get pricePlanDetails
+   * @return pricePlanDetails
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public RateCard getRatePayload() {
-    return ratePayload;
+  public PricePlanDetails getPricePlanDetails() {
+    return pricePlanDetails;
   }
 
 
-  public void setRatePayload(RateCard ratePayload) {
-    this.ratePayload = ratePayload;
+  public void setPricePlanDetails(PricePlanDetails pricePlanDetails) {
+    this.pricePlanDetails = pricePlanDetails;
   }
 
 
@@ -149,21 +149,21 @@ public class PricingSchedule implements Serializable {
       return false;
     }
     PricingSchedule pricingSchedule = (PricingSchedule) o;
-    return Objects.equals(this.ratePayload, pricingSchedule.ratePayload) &&
+    return Objects.equals(this.pricePlanDetails, pricingSchedule.pricePlanDetails) &&
         Objects.equals(this.startDate, pricingSchedule.startDate) &&
         Objects.equals(this.endDate, pricingSchedule.endDate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ratePayload, startDate, endDate);
+    return Objects.hash(pricePlanDetails, startDate, endDate);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class PricingSchedule {\n");
-    sb.append("    ratePayload: ").append(toIndentedString(ratePayload)).append("\n");
+    sb.append("    pricePlanDetails: ").append(toIndentedString(pricePlanDetails)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
     sb.append("}");
@@ -188,7 +188,7 @@ public class PricingSchedule implements Serializable {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("ratePayload");
+    openapiFields.add("pricePlanDetails");
     openapiFields.add("startDate");
     openapiFields.add("endDate");
 
@@ -227,9 +227,9 @@ public class PricingSchedule implements Serializable {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
       }
-      // validate the optional field `ratePayload`
-      if (jsonObj.get("ratePayload") != null && !jsonObj.get("ratePayload").isJsonNull()) {
-        RateCard.validateJsonObject(jsonObj.getAsJsonObject("ratePayload"));
+      // validate the optional field `pricePlanDetails`
+      if (jsonObj.get("pricePlanDetails") != null && !jsonObj.get("pricePlanDetails").isJsonNull()) {
+        PricePlanDetails.validateJsonObject(jsonObj.getAsJsonObject("pricePlanDetails"));
       }
   }
 

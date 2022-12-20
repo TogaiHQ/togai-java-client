@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**name** | **String** |  |  |
 |**id** | **UUID** |  |  |
+|**scheduleId** | **UUID** |  |  |
 |**cycleStart** | **LocalDate** |  |  |
 |**cycleEnd** | **LocalDate** |  |  |
 |**usageMeters** | **Set&lt;String&gt;** |  |  [optional] |

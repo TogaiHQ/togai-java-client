@@ -5,7 +5,7 @@
     <artifactId>togai-java-client</artifactId>
     <packaging>jar</packaging>
     <name>togai-java-client</name>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <url>https://github.com/openapitools/openapi-generator</url>
     <description>Java client for Togai APIs</description>
     <scm>

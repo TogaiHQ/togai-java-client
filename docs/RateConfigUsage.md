@@ -1,13 +1,15 @@
 
 
-# BundleStrategyUsageMetersValue
+# RateConfigUsage
 
+Contains all rate related configurations
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**startAfter** | **Double** |  |  |
+|**usageMeterName** | **String** |  |  |
+|**slabs** | [**List&lt;SlabUsage&gt;**](SlabUsage.md) |  |  |
 
 
 ## Implemented Interfaces

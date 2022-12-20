@@ -64,6 +64,10 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
   @SerializedName(SERIALIZED_NAME_ID)
   private UUID id;
 
+  public static final String SERIALIZED_NAME_SCHEDULE_ID = "scheduleId";
+  @SerializedName(SERIALIZED_NAME_SCHEDULE_ID)
+  private UUID scheduleId;
+
   public static final String SERIALIZED_NAME_CYCLE_START = "cycleStart";
   @SerializedName(SERIALIZED_NAME_CYCLE_START)
   private LocalDate cycleStart;
@@ -122,6 +126,29 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
 
   public void setId(UUID id) {
     this.id = id;
+  }
+
+
+  public EventPipelineInfoPricePlansInner scheduleId(UUID scheduleId) {
+    
+    this.scheduleId = scheduleId;
+    return this;
+  }
+
+   /**
+   * Get scheduleId
+   * @return scheduleId
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public UUID getScheduleId() {
+    return scheduleId;
+  }
+
+
+  public void setScheduleId(UUID scheduleId) {
+    this.scheduleId = scheduleId;
   }
 
 
@@ -214,6 +241,7 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
     EventPipelineInfoPricePlansInner eventPipelineInfoPricePlansInner = (EventPipelineInfoPricePlansInner) o;
     return Objects.equals(this.name, eventPipelineInfoPricePlansInner.name) &&
         Objects.equals(this.id, eventPipelineInfoPricePlansInner.id) &&
+        Objects.equals(this.scheduleId, eventPipelineInfoPricePlansInner.scheduleId) &&
         Objects.equals(this.cycleStart, eventPipelineInfoPricePlansInner.cycleStart) &&
         Objects.equals(this.cycleEnd, eventPipelineInfoPricePlansInner.cycleEnd) &&
         Objects.equals(this.usageMeters, eventPipelineInfoPricePlansInner.usageMeters);
@@ -221,7 +249,7 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, id, cycleStart, cycleEnd, usageMeters);
+    return Objects.hash(name, id, scheduleId, cycleStart, cycleEnd, usageMeters);
   }
 
   @Override
@@ -230,6 +258,7 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
     sb.append("class EventPipelineInfoPricePlansInner {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    scheduleId: ").append(toIndentedString(scheduleId)).append("\n");
     sb.append("    cycleStart: ").append(toIndentedString(cycleStart)).append("\n");
     sb.append("    cycleEnd: ").append(toIndentedString(cycleEnd)).append("\n");
     sb.append("    usageMeters: ").append(toIndentedString(usageMeters)).append("\n");
@@ -257,6 +286,7 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
     openapiFields = new HashSet<String>();
     openapiFields.add("name");
     openapiFields.add("id");
+    openapiFields.add("scheduleId");
     openapiFields.add("cycleStart");
     openapiFields.add("cycleEnd");
     openapiFields.add("usageMeters");
@@ -265,6 +295,7 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("name");
     openapiRequiredFields.add("id");
+    openapiRequiredFields.add("scheduleId");
     openapiRequiredFields.add("cycleStart");
     openapiRequiredFields.add("cycleEnd");
   }
@@ -303,6 +334,9 @@ public class EventPipelineInfoPricePlansInner implements Serializable {
       }
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+      if ((jsonObj.get("scheduleId") != null && !jsonObj.get("scheduleId").isJsonNull()) && !jsonObj.get("scheduleId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `scheduleId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("scheduleId").toString()));
       }
       // ensure the json data is an array
       if ((jsonObj.get("usageMeters") != null && !jsonObj.get("usageMeters").isJsonNull()) && !jsonObj.get("usageMeters").isJsonArray()) {

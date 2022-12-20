@@ -58,7 +58,7 @@ public class PricePlanPaginatedResponse implements Serializable {
 
   public static final String SERIALIZED_NAME_DATA = "data";
   @SerializedName(SERIALIZED_NAME_DATA)
-  private List<PricePlanListData> data = null;
+  private List<PricePlanListData> data = new ArrayList<>();
 
   public static final String SERIALIZED_NAME_NEXT_TOKEN = "nextToken";
   @SerializedName(SERIALIZED_NAME_NEXT_TOKEN)
@@ -78,9 +78,6 @@ public class PricePlanPaginatedResponse implements Serializable {
   }
 
   public PricePlanPaginatedResponse addDataItem(PricePlanListData dataItem) {
-    if (this.data == null) {
-      this.data = new ArrayList<>();
-    }
     this.data.add(dataItem);
     return this;
   }
@@ -89,8 +86,8 @@ public class PricePlanPaginatedResponse implements Serializable {
    * Get data
    * @return data
   **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
 
   public List<PricePlanListData> getData() {
     return data;
@@ -203,6 +200,7 @@ public class PricePlanPaginatedResponse implements Serializable {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("data");
   }
 
  /**
@@ -225,6 +223,13 @@ public class PricePlanPaginatedResponse implements Serializable {
       for (Entry<String, JsonElement> entry : entries) {
         if (!PricePlanPaginatedResponse.openapiFields.contains(entry.getKey())) {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `PricePlanPaginatedResponse` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : PricePlanPaginatedResponse.openapiRequiredFields) {
+        if (jsonObj.get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
       }
       JsonArray jsonArraydata = jsonObj.getAsJsonArray("data");

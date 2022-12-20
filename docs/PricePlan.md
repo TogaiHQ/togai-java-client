@@ -11,7 +11,6 @@ Price plan entity
 |**name** | **String** | Name of the price plan |  |
 |**description** | **String** | Description of price plan |  [optional] |
 |**status** | [**StatusEnum**](#StatusEnum) | Status of Price plan |  |
-|**pricingCycle** | [**PricingCycle**](PricingCycle.md) |  |  |
 |**pricingSchedule** | [**List&lt;PricingSchedule&gt;**](PricingSchedule.md) |  |  |
 
 

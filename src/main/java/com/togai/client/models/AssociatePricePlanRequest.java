@@ -20,7 +20,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.togai.client.models.RateCard;
+import com.togai.client.models.PricePlanDetailsOverride;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
@@ -67,9 +67,9 @@ public class AssociatePricePlanRequest implements Serializable {
   @SerializedName(SERIALIZED_NAME_EFFECTIVE_UNTIL)
   private LocalDate effectiveUntil;
 
-  public static final String SERIALIZED_NAME_RATE_CARD_OVERRIDE = "rateCardOverride";
-  @SerializedName(SERIALIZED_NAME_RATE_CARD_OVERRIDE)
-  private RateCard rateCardOverride;
+  public static final String SERIALIZED_NAME_PRICE_PLAN_DETAILS_OVERRIDE = "pricePlanDetailsOverride";
+  @SerializedName(SERIALIZED_NAME_PRICE_PLAN_DETAILS_OVERRIDE)
+  private PricePlanDetailsOverride pricePlanDetailsOverride;
 
   public AssociatePricePlanRequest() {
   }
@@ -107,8 +107,8 @@ public class AssociatePricePlanRequest implements Serializable {
    * Date of effectiveness of the association. - Expected only if the account already has a price plan associated with it. 
    * @return effectiveFrom
   **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "Date of effectiveness of the association. - Expected only if the account already has a price plan associated with it. ")
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "Date of effectiveness of the association. - Expected only if the account already has a price plan associated with it. ")
 
   public LocalDate getEffectiveFrom() {
     return effectiveFrom;
@@ -130,8 +130,8 @@ public class AssociatePricePlanRequest implements Serializable {
    * Date until which the association must be effective. - Expected only if effectiveFrom is present. 
    * @return effectiveUntil
   **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "Date until which the association must be effective. - Expected only if effectiveFrom is present. ")
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "Date until which the association must be effective. - Expected only if effectiveFrom is present. ")
 
   public LocalDate getEffectiveUntil() {
     return effectiveUntil;
@@ -143,26 +143,26 @@ public class AssociatePricePlanRequest implements Serializable {
   }
 
 
-  public AssociatePricePlanRequest rateCardOverride(RateCard rateCardOverride) {
+  public AssociatePricePlanRequest pricePlanDetailsOverride(PricePlanDetailsOverride pricePlanDetailsOverride) {
     
-    this.rateCardOverride = rateCardOverride;
+    this.pricePlanDetailsOverride = pricePlanDetailsOverride;
     return this;
   }
 
    /**
-   * Get rateCardOverride
-   * @return rateCardOverride
+   * Get pricePlanDetailsOverride
+   * @return pricePlanDetailsOverride
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public RateCard getRateCardOverride() {
-    return rateCardOverride;
+  public PricePlanDetailsOverride getPricePlanDetailsOverride() {
+    return pricePlanDetailsOverride;
   }
 
 
-  public void setRateCardOverride(RateCard rateCardOverride) {
-    this.rateCardOverride = rateCardOverride;
+  public void setPricePlanDetailsOverride(PricePlanDetailsOverride pricePlanDetailsOverride) {
+    this.pricePlanDetailsOverride = pricePlanDetailsOverride;
   }
 
 
@@ -179,12 +179,12 @@ public class AssociatePricePlanRequest implements Serializable {
     return Objects.equals(this.pricePlanName, associatePricePlanRequest.pricePlanName) &&
         Objects.equals(this.effectiveFrom, associatePricePlanRequest.effectiveFrom) &&
         Objects.equals(this.effectiveUntil, associatePricePlanRequest.effectiveUntil) &&
-        Objects.equals(this.rateCardOverride, associatePricePlanRequest.rateCardOverride);
+        Objects.equals(this.pricePlanDetailsOverride, associatePricePlanRequest.pricePlanDetailsOverride);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pricePlanName, effectiveFrom, effectiveUntil, rateCardOverride);
+    return Objects.hash(pricePlanName, effectiveFrom, effectiveUntil, pricePlanDetailsOverride);
   }
 
   @Override
@@ -194,7 +194,7 @@ public class AssociatePricePlanRequest implements Serializable {
     sb.append("    pricePlanName: ").append(toIndentedString(pricePlanName)).append("\n");
     sb.append("    effectiveFrom: ").append(toIndentedString(effectiveFrom)).append("\n");
     sb.append("    effectiveUntil: ").append(toIndentedString(effectiveUntil)).append("\n");
-    sb.append("    rateCardOverride: ").append(toIndentedString(rateCardOverride)).append("\n");
+    sb.append("    pricePlanDetailsOverride: ").append(toIndentedString(pricePlanDetailsOverride)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -220,11 +220,13 @@ public class AssociatePricePlanRequest implements Serializable {
     openapiFields.add("pricePlanName");
     openapiFields.add("effectiveFrom");
     openapiFields.add("effectiveUntil");
-    openapiFields.add("rateCardOverride");
+    openapiFields.add("pricePlanDetailsOverride");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("pricePlanName");
+    openapiRequiredFields.add("effectiveFrom");
+    openapiRequiredFields.add("effectiveUntil");
   }
 
  /**
@@ -259,9 +261,9 @@ public class AssociatePricePlanRequest implements Serializable {
       if ((jsonObj.get("pricePlanName") != null && !jsonObj.get("pricePlanName").isJsonNull()) && !jsonObj.get("pricePlanName").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `pricePlanName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pricePlanName").toString()));
       }
-      // validate the optional field `rateCardOverride`
-      if (jsonObj.get("rateCardOverride") != null && !jsonObj.get("rateCardOverride").isJsonNull()) {
-        RateCard.validateJsonObject(jsonObj.getAsJsonObject("rateCardOverride"));
+      // validate the optional field `pricePlanDetailsOverride`
+      if (jsonObj.get("pricePlanDetailsOverride") != null && !jsonObj.get("pricePlanDetailsOverride").isJsonNull()) {
+        PricePlanDetailsOverride.validateJsonObject(jsonObj.getAsJsonObject("pricePlanDetailsOverride"));
       }
   }
 

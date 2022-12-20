@@ -1,17 +1,18 @@
 
 
-# BundleStrategy
+# SlabUsage
 
-Represents a pricing strategy (rates + slabs) for bundle price plan
+Represents a pricing priceType (rates + slabs) for usage price plan
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**name** | **String** |  |  |
 |**rate** | **BigDecimal** |  |  |
+|**startAfter** | **BigDecimal** |  |  |
+|**priceType** | **PriceType** |  |  |
+|**config** | **Map&lt;String, String&gt;** |  |  [optional] |
 |**order** | **Integer** |  |  |
-|**usageMeters** | [**Map&lt;String, BundleStrategyUsageMetersValue&gt;**](BundleStrategyUsageMetersValue.md) |  |  |
 
 
 ## Implemented Interfaces

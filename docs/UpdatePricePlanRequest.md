@@ -9,8 +9,7 @@ Request to update a price plan
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**description** | **String** | Description of price plan |  [optional] |
-|**pricingCycle** | [**PricingCycle**](PricingCycle.md) |  |  [optional] |
-|**rateCard** | [**RateCard**](RateCard.md) |  |  [optional] |
+|**pricePlanDetails** | [**PricePlanDetailsOverride**](PricePlanDetailsOverride.md) |  |  [optional] |
 
 
 ## Implemented Interfaces

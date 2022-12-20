@@ -8,7 +8,7 @@ Represents effectiveness period and config of a price plan. i.e, price plan boun
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**ratePayload** | [**RateCard**](RateCard.md) |  |  [optional] |
+|**pricePlanDetails** | [**PricePlanDetails**](PricePlanDetails.md) |  |  [optional] |
 |**startDate** | **OffsetDateTime** |  |  |
 |**endDate** | **OffsetDateTime** |  |  |
 

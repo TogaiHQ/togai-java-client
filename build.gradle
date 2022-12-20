@@ -6,7 +6,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 
 group = 'com.togai'
-version = '1.0.0'
+version = '1.0.2'
 
 buildscript {
     repositories {

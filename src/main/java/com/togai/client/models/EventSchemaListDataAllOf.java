@@ -23,8 +23,6 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.Serializable;
 
 import com.google.gson.Gson;
@@ -54,41 +52,33 @@ import com.togai.client.JSON;
 public class EventSchemaListDataAllOf implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  public static final String SERIALIZED_NAME_ASSOCIATED_USAGE_METERS = "associatedUsageMeters";
-  @SerializedName(SERIALIZED_NAME_ASSOCIATED_USAGE_METERS)
-  private List<String> associatedUsageMeters = null;
+  public static final String SERIALIZED_NAME_USAGE_METERS_COUNT = "usageMetersCount";
+  @SerializedName(SERIALIZED_NAME_USAGE_METERS_COUNT)
+  private Integer usageMetersCount;
 
   public EventSchemaListDataAllOf() {
   }
 
-  public EventSchemaListDataAllOf associatedUsageMeters(List<String> associatedUsageMeters) {
+  public EventSchemaListDataAllOf usageMetersCount(Integer usageMetersCount) {
     
-    this.associatedUsageMeters = associatedUsageMeters;
-    return this;
-  }
-
-  public EventSchemaListDataAllOf addAssociatedUsageMetersItem(String associatedUsageMetersItem) {
-    if (this.associatedUsageMeters == null) {
-      this.associatedUsageMeters = new ArrayList<>();
-    }
-    this.associatedUsageMeters.add(associatedUsageMetersItem);
+    this.usageMetersCount = usageMetersCount;
     return this;
   }
 
    /**
-   * Get associatedUsageMeters
-   * @return associatedUsageMeters
+   * Get usageMetersCount
+   * @return usageMetersCount
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public List<String> getAssociatedUsageMeters() {
-    return associatedUsageMeters;
+  public Integer getUsageMetersCount() {
+    return usageMetersCount;
   }
 
 
-  public void setAssociatedUsageMeters(List<String> associatedUsageMeters) {
-    this.associatedUsageMeters = associatedUsageMeters;
+  public void setUsageMetersCount(Integer usageMetersCount) {
+    this.usageMetersCount = usageMetersCount;
   }
 
 
@@ -102,19 +92,19 @@ public class EventSchemaListDataAllOf implements Serializable {
       return false;
     }
     EventSchemaListDataAllOf eventSchemaListDataAllOf = (EventSchemaListDataAllOf) o;
-    return Objects.equals(this.associatedUsageMeters, eventSchemaListDataAllOf.associatedUsageMeters);
+    return Objects.equals(this.usageMetersCount, eventSchemaListDataAllOf.usageMetersCount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(associatedUsageMeters);
+    return Objects.hash(usageMetersCount);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventSchemaListDataAllOf {\n");
-    sb.append("    associatedUsageMeters: ").append(toIndentedString(associatedUsageMeters)).append("\n");
+    sb.append("    usageMetersCount: ").append(toIndentedString(usageMetersCount)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -137,7 +127,7 @@ public class EventSchemaListDataAllOf implements Serializable {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("associatedUsageMeters");
+    openapiFields.add("usageMetersCount");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -164,10 +154,6 @@ public class EventSchemaListDataAllOf implements Serializable {
         if (!EventSchemaListDataAllOf.openapiFields.contains(entry.getKey())) {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `EventSchemaListDataAllOf` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
-      }
-      // ensure the json data is an array
-      if ((jsonObj.get("associatedUsageMeters") != null && !jsonObj.get("associatedUsageMeters").isJsonNull()) && !jsonObj.get("associatedUsageMeters").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `associatedUsageMeters` to be an array in the JSON string but got `%s`", jsonObj.get("associatedUsageMeters").toString()));
       }
   }
 

@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 
 
 public class Example {
-    public static void main(String[] args) {
-        final String API_TOKEN = "YOUR_API_TOKEN";
+    public static void main(String[] args) throws InterruptedException{
+        final String API_TOKEN = "YOUR TOKEN";
         final String BASE_PATH = "https://sandbox-api.togai.com";
 
         ApiClient apiClient = Configuration.getDefaultApiClient();
@@ -65,33 +65,35 @@ public class Example {
             final PricePlansApi pricePlansApi = new PricePlansApi(apiClient);
             final CreatePricePlanRequest createPricePlanRequest = new CreatePricePlanRequest()
                 .name("price-plan")
-                .pricingCycle(new PricingCycle()
-                    .interval(PricingCycle.IntervalEnum.MONTHLY)
-                    .startType(PricingCycle.StartTypeEnum.STATIC)
-                    .startOffset(new PricingCycleStartOffset()
-                        .dayOffset("1")
-                        .monthOffset("NIL")
+                .pricePlanDetails(new PricePlanDetails()
+                    .pricingCycleConfig(new PricingCycleConfig()
+                        .interval(PricingCycleConfig.IntervalEnum.MONTHLY)
+                        .startType(PricingCycleConfig.StartTypeEnum.STATIC)
+                        .startOffset(new PricingCycleConfigStartOffset()
+                            .dayOffset("1")
+                            .monthOffset("NIL")
+                        )
+                        .gracePeriod(1)
                     )
-                    .gracePeriod(1)
-                )
-                .rateCard(new RateCard()
-                    .type(RateCard.TypeEnum.USAGE)
-                    .usageConfig(Collections.singletonMap(
-                        usageMeter.getName(),
-                        new RateCardUsageValue()
-                            .name("SMS charges")
-                            .rateStrategy(RateCardUsageValue.RateStrategyEnum.PER_UNIT)
-                            .slabStrategy(RateCardUsageValue.SlabStrategyEnum.TIER)
-                            .slabs(Arrays.asList(
-                                new UsageStrategy()
-                                    .rate(BigDecimal.valueOf(0.2))
-                                    .startAfter(0.0)
-                                    .order(1),
-                                new UsageStrategy()
-                                    .rate(BigDecimal.valueOf(0.1))
-                                    .startAfter(10000.0)
-                                    .order(2)
-                            ))
+                    .rateCards(Arrays.asList(
+                            new RateCard()
+                            .displayName("SMS Charges")
+                            .pricingModel(PricingModel.TIERED)
+                            .rateConfig(new RateConfigUsage()
+                                .usageMeterName(usageMeter.getName())
+                                .slabs(Arrays.asList(
+                                    new SlabUsage()
+                                        .rate(BigDecimal.valueOf(0.2))
+                                        .startAfter(BigDecimal.valueOf(0.0))
+                                        .priceType(PriceType.PER_UNIT)
+                                        .order(1),
+                                    new SlabUsage()
+                                        .rate(BigDecimal.valueOf(0.1))
+                                        .startAfter(BigDecimal.valueOf(10000.0))
+                                        .priceType(PriceType.PER_UNIT)
+                                        .order(2)
+                                ))
+                            )
                         )
                     )
                 );
@@ -115,7 +117,8 @@ public class Example {
             final AccountsApi accountsApi = new AccountsApi(apiClient);
             final AssociatePricePlanRequest associatePricePlanRequest = new AssociatePricePlanRequest()
                 .pricePlanName(pricePlan.getName())
-                .effectiveFrom(LocalDate.now());
+                .effectiveFrom(LocalDate.now())
+                .effectiveUntil(LocalDate.of(9999, 1, 1));
             final AssociatePricePlanResponse account = accountsApi.associatePricePlan(customer.getId(), customer.getId(), associatePricePlanRequest);
             System.out.println(account);
 
@@ -135,6 +138,8 @@ public class Example {
                     .dimensions(Collections.singletonMap("country", "US"))
                 );
             eventIngestionApi.ingest(ingestEventRequest);
+
+            Thread.sleep(70000);
 
             // Step 10: Get the usage metrics 
             OffsetDateTime now = OffsetDateTime.now();

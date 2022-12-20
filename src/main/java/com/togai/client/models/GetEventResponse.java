@@ -58,7 +58,7 @@ public class GetEventResponse implements Serializable {
 
   public static final String SERIALIZED_NAME_EVENTS = "events";
   @SerializedName(SERIALIZED_NAME_EVENTS)
-  private List<EventWithStatusAndEventPipelineInfo> events = null;
+  private List<EventWithStatusAndEventPipelineInfo> events = new ArrayList<>();
 
   public GetEventResponse() {
   }
@@ -70,9 +70,6 @@ public class GetEventResponse implements Serializable {
   }
 
   public GetEventResponse addEventsItem(EventWithStatusAndEventPipelineInfo eventsItem) {
-    if (this.events == null) {
-      this.events = new ArrayList<>();
-    }
     this.events.add(eventsItem);
     return this;
   }
@@ -81,8 +78,8 @@ public class GetEventResponse implements Serializable {
    * Get events
    * @return events
   **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
 
   public List<EventWithStatusAndEventPipelineInfo> getEvents() {
     return events;
@@ -143,6 +140,7 @@ public class GetEventResponse implements Serializable {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("events");
   }
 
  /**
@@ -165,6 +163,13 @@ public class GetEventResponse implements Serializable {
       for (Entry<String, JsonElement> entry : entries) {
         if (!GetEventResponse.openapiFields.contains(entry.getKey())) {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `GetEventResponse` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : GetEventResponse.openapiRequiredFields) {
+        if (jsonObj.get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
       }
       JsonArray jsonArrayevents = jsonObj.getAsJsonArray("events");

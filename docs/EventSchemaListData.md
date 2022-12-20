@@ -15,7 +15,7 @@
 |**dimensions** | [**Set&lt;DimensionsSchema&gt;**](DimensionsSchema.md) |  |  [optional] |
 |**createdAt** | **OffsetDateTime** |  |  [optional] |
 |**updatedAt** | **OffsetDateTime** |  |  [optional] |
-|**associatedUsageMeters** | **List&lt;String&gt;** |  |  [optional] |
+|**usageMetersCount** | **Integer** |  |  [optional] |
 
 
 

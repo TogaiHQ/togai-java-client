@@ -20,7 +20,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.togai.client.models.BundleStrategyUsageMetersValue;
+import com.togai.client.models.PriceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
@@ -50,56 +50,33 @@ import java.util.Set;
 import com.togai.client.JSON;
 
 /**
- * Represents a pricing strategy (rates + slabs) for bundle price plan
+ * TODO
  */
-@ApiModel(description = "Represents a pricing strategy (rates + slabs) for bundle price plan")
+@ApiModel(description = "TODO")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class BundleStrategy implements Serializable {
+public class SlabBundle implements Serializable {
   private static final long serialVersionUID = 1L;
-
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  private String name;
 
   public static final String SERIALIZED_NAME_RATE = "rate";
   @SerializedName(SERIALIZED_NAME_RATE)
   private BigDecimal rate;
 
-  public static final String SERIALIZED_NAME_ORDER = "order";
-  @SerializedName(SERIALIZED_NAME_ORDER)
-  private Integer order;
+  public static final String SERIALIZED_NAME_START_AFTER = "startAfter";
+  @SerializedName(SERIALIZED_NAME_START_AFTER)
+  private BigDecimal startAfter;
 
-  public static final String SERIALIZED_NAME_USAGE_METERS = "usageMeters";
-  @SerializedName(SERIALIZED_NAME_USAGE_METERS)
-  private Map<String, BundleStrategyUsageMetersValue> usageMeters = new HashMap<>();
+  public static final String SERIALIZED_NAME_PRICE_TYPE = "priceType";
+  @SerializedName(SERIALIZED_NAME_PRICE_TYPE)
+  private PriceType priceType;
 
-  public BundleStrategy() {
+  public static final String SERIALIZED_NAME_CONFIG = "config";
+  @SerializedName(SERIALIZED_NAME_CONFIG)
+  private Map<String, String> config = null;
+
+  public SlabBundle() {
   }
 
-  public BundleStrategy name(String name) {
-    
-    this.name = name;
-    return this;
-  }
-
-   /**
-   * Get name
-   * @return name
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
-
-  public String getName() {
-    return name;
-  }
-
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-
-  public BundleStrategy rate(BigDecimal rate) {
+  public SlabBundle rate(BigDecimal rate) {
     
     this.rate = rate;
     return this;
@@ -122,56 +99,80 @@ public class BundleStrategy implements Serializable {
   }
 
 
-  public BundleStrategy order(Integer order) {
+  public SlabBundle startAfter(BigDecimal startAfter) {
     
-    this.order = order;
+    this.startAfter = startAfter;
     return this;
   }
 
    /**
-   * Get order
-   * minimum: 1
-   * maximum: 10
-   * @return order
+   * Get startAfter
+   * @return startAfter
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public Integer getOrder() {
-    return order;
+  public BigDecimal getStartAfter() {
+    return startAfter;
   }
 
 
-  public void setOrder(Integer order) {
-    this.order = order;
+  public void setStartAfter(BigDecimal startAfter) {
+    this.startAfter = startAfter;
   }
 
 
-  public BundleStrategy usageMeters(Map<String, BundleStrategyUsageMetersValue> usageMeters) {
+  public SlabBundle priceType(PriceType priceType) {
     
-    this.usageMeters = usageMeters;
-    return this;
-  }
-
-  public BundleStrategy putUsageMetersItem(String key, BundleStrategyUsageMetersValue usageMetersItem) {
-    this.usageMeters.put(key, usageMetersItem);
+    this.priceType = priceType;
     return this;
   }
 
    /**
-   * Get usageMeters
-   * @return usageMeters
+   * Get priceType
+   * @return priceType
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public Map<String, BundleStrategyUsageMetersValue> getUsageMeters() {
-    return usageMeters;
+  public PriceType getPriceType() {
+    return priceType;
   }
 
 
-  public void setUsageMeters(Map<String, BundleStrategyUsageMetersValue> usageMeters) {
-    this.usageMeters = usageMeters;
+  public void setPriceType(PriceType priceType) {
+    this.priceType = priceType;
+  }
+
+
+  public SlabBundle config(Map<String, String> config) {
+    
+    this.config = config;
+    return this;
+  }
+
+  public SlabBundle putConfigItem(String key, String configItem) {
+    if (this.config == null) {
+      this.config = new HashMap<>();
+    }
+    this.config.put(key, configItem);
+    return this;
+  }
+
+   /**
+   * Get config
+   * @return config
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Map<String, String> getConfig() {
+    return config;
+  }
+
+
+  public void setConfig(Map<String, String> config) {
+    this.config = config;
   }
 
 
@@ -184,26 +185,26 @@ public class BundleStrategy implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    BundleStrategy bundleStrategy = (BundleStrategy) o;
-    return Objects.equals(this.name, bundleStrategy.name) &&
-        Objects.equals(this.rate, bundleStrategy.rate) &&
-        Objects.equals(this.order, bundleStrategy.order) &&
-        Objects.equals(this.usageMeters, bundleStrategy.usageMeters);
+    SlabBundle slabBundle = (SlabBundle) o;
+    return Objects.equals(this.rate, slabBundle.rate) &&
+        Objects.equals(this.startAfter, slabBundle.startAfter) &&
+        Objects.equals(this.priceType, slabBundle.priceType) &&
+        Objects.equals(this.config, slabBundle.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, rate, order, usageMeters);
+    return Objects.hash(rate, startAfter, priceType, config);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class BundleStrategy {\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("class SlabBundle {\n");
     sb.append("    rate: ").append(toIndentedString(rate)).append("\n");
-    sb.append("    order: ").append(toIndentedString(order)).append("\n");
-    sb.append("    usageMeters: ").append(toIndentedString(usageMeters)).append("\n");
+    sb.append("    startAfter: ").append(toIndentedString(startAfter)).append("\n");
+    sb.append("    priceType: ").append(toIndentedString(priceType)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -226,50 +227,46 @@ public class BundleStrategy implements Serializable {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("name");
     openapiFields.add("rate");
-    openapiFields.add("order");
-    openapiFields.add("usageMeters");
+    openapiFields.add("startAfter");
+    openapiFields.add("priceType");
+    openapiFields.add("config");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("name");
     openapiRequiredFields.add("rate");
-    openapiRequiredFields.add("order");
-    openapiRequiredFields.add("usageMeters");
+    openapiRequiredFields.add("startAfter");
+    openapiRequiredFields.add("priceType");
   }
 
  /**
   * Validates the JSON Object and throws an exception if issues found
   *
   * @param jsonObj JSON Object
-  * @throws IOException if the JSON Object is invalid with respect to BundleStrategy
+  * @throws IOException if the JSON Object is invalid with respect to SlabBundle
   */
   public static void validateJsonObject(JsonObject jsonObj) throws IOException {
       if (jsonObj == null) {
-        if (BundleStrategy.openapiRequiredFields.isEmpty()) {
+        if (SlabBundle.openapiRequiredFields.isEmpty()) {
           return;
         } else { // has required fields
-          throw new IllegalArgumentException(String.format("The required field(s) %s in BundleStrategy is not found in the empty JSON string", BundleStrategy.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in SlabBundle is not found in the empty JSON string", SlabBundle.openapiRequiredFields.toString()));
         }
       }
 
       Set<Entry<String, JsonElement>> entries = jsonObj.entrySet();
       // check to see if the JSON string contains additional fields
       for (Entry<String, JsonElement> entry : entries) {
-        if (!BundleStrategy.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `BundleStrategy` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
+        if (!SlabBundle.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SlabBundle` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : BundleStrategy.openapiRequiredFields) {
+      for (String requiredField : SlabBundle.openapiRequiredFields) {
         if (jsonObj.get(requiredField) == null) {
           throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
   }
 
@@ -277,22 +274,22 @@ public class BundleStrategy implements Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!BundleStrategy.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'BundleStrategy' and its subtypes
+       if (!SlabBundle.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'SlabBundle' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<BundleStrategy> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(BundleStrategy.class));
+       final TypeAdapter<SlabBundle> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(SlabBundle.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<BundleStrategy>() {
+       return (TypeAdapter<T>) new TypeAdapter<SlabBundle>() {
            @Override
-           public void write(JsonWriter out, BundleStrategy value) throws IOException {
+           public void write(JsonWriter out, SlabBundle value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public BundleStrategy read(JsonReader in) throws IOException {
+           public SlabBundle read(JsonReader in) throws IOException {
              JsonObject jsonObj = elementAdapter.read(in).getAsJsonObject();
              validateJsonObject(jsonObj);
              return thisAdapter.fromJsonTree(jsonObj);
@@ -303,18 +300,18 @@ public class BundleStrategy implements Serializable {
   }
 
  /**
-  * Create an instance of BundleStrategy given an JSON string
+  * Create an instance of SlabBundle given an JSON string
   *
   * @param jsonString JSON string
-  * @return An instance of BundleStrategy
-  * @throws IOException if the JSON string is invalid with respect to BundleStrategy
+  * @return An instance of SlabBundle
+  * @throws IOException if the JSON string is invalid with respect to SlabBundle
   */
-  public static BundleStrategy fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, BundleStrategy.class);
+  public static SlabBundle fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, SlabBundle.class);
   }
 
  /**
-  * Convert an instance of BundleStrategy to an JSON string
+  * Convert an instance of SlabBundle to an JSON string
   *
   * @return JSON string
   */

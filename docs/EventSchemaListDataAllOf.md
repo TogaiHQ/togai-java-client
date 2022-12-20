@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**associatedUsageMeters** | **List&lt;String&gt;** |  |  [optional] |
+|**usageMetersCount** | **Integer** |  |  [optional] |
 
 
 ## Implemented Interfaces

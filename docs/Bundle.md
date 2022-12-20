@@ -1,15 +1,16 @@
 
 
-# RateCard
+# Bundle
 
+TODO
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**displayName** | **String** |  |  |
-|**pricingModel** | **PricingModel** |  |  |
-|**rateConfig** | [**RateConfigUsage**](RateConfigUsage.md) |  |  |
+|**order** | **Integer** |  |  |
+|**rateConfigs** | [**List&lt;RateConfigBundle&gt;**](RateConfigBundle.md) |  |  |
 
 
 ## Implemented Interfaces
